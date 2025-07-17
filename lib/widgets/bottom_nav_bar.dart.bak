@@ -1,0 +1,128 @@
+import 'package:flutter/material.dart';
+import 'package:saegim/constants/colors.dart';
+import 'package:saegim/screens/calendar_screen.dart';
+import 'package:saegim/screens/memo_screen.dart';
+import 'package:saegim/screens/todo_screen.dart';
+
+class BottomNavBar extends StatefulWidget {
+  const BottomNavBar({super.key});
+
+  @override
+  State<BottomNavBar> createState() => _BottomNavBarState();
+}
+
+class _BottomNavBarState extends State<BottomNavBar> {
+  int _selectedIndex = 0;
+
+  final List<Widget> _screens = [
+    CalendarScreen(),
+    MemoScreen(),
+    TodoScreen(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => _screens[index]),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      bottomNavigationBar: _BottomNavgationBar(selectedIndex: _selectedIndex),
+      body: Container(),
+    );
+  }
+}
+
+class _BottomNavgationBar extends StatelessWidget {
+  final int selectedIndex;
+
+  const _BottomNavgationBar({
+    super.key,
+    required this.selectedIndex,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomNavigationBar(
+        backgroundColor: primaryColor,
+        items: [
+          BottomNavigationBarItem(
+            icon: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(height: 7),
+                selectedIndex == 0
+                    ? Image.asset('assets/images/icons/icon_menu_calendar_on.png', width: 28, height: 28)
+                    : Image.asset('assets/images/icons/icon_menu_calendar_off.png', width: 28, height: 28),
+                SizedBox(height: 7),
+                Text(
+                  '일정',
+                  style: TextStyle(
+                    fontFamily: 'Pretendard',
+                    fontSize: 16.0,
+                    fontWeight: selectedIndex == 0 ? FontWeight.w500 : FontWeight.w600,
+                    color: selectedIndex == 0 ? menuOnTextColor : menuOffTextColor,
+                  ),
+                ),
+              ],
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Column(
+              children: [
+                SizedBox(height: 7),
+                selectedIndex == 1
+                    ? Image.asset('assets/images/icons/icon_menu_memo_on.png', width: 28, height: 28)
+                    : Image.asset('assets/images/icons/icon_menu_memo_off.png', width: 28, height: 28),
+                SizedBox(height: 7),
+                Text(
+                  '메모',
+                  style: TextStyle(
+                    fontFamily: 'Pretendard',
+                    fontSize: 16.0,
+                    fontWeight: selectedIndex == 1 ? FontWeight.w500 : FontWeight.w600,
+                    color: selectedIndex == 1 ? menuOnTextColor : menuOffTextColor,
+                  ),
+                ),
+              ],
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Column(
+              children: [
+                SizedBox(height: 7),
+                selectedIndex == 2
+                    ? Image.asset('assets/images/icons/icon_menu_todo_on.png', width: 28, height: 28)
+                    : Image.asset('assets/images/icons/icon_menu_todo_off.png', width: 28, height: 28),
+                SizedBox(height: 7),
+                Text(
+                  'To do',
+                  style: TextStyle(
+                    fontFamily: 'Pretendard',
+                    fontSize: 16.0,
+                    fontWeight: selectedIndex == 2 ? FontWeight.w500 : FontWeight.w600,
+                    color: selectedIndex == 2 ? menuOnTextColor : menuOffTextColor,
+                  ),
+                ),
+              ],
+            ),
+            label: '',
+          ),
+          
+        ],
+        currentIndex: selectedIndex,
+        onTap: (index) {
+          // Handle navigation logic here
+        },
+      );
+  }
+}
