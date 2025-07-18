@@ -13,6 +13,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
+  late PageController _pageController;
 
   final List<Widget> _screens = [
     CalendarScreen(),
@@ -20,20 +21,40 @@ class _MainScreenState extends State<MainScreen> {
     TodoScreen(),
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(initialPage: _selectedIndex);
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
   void _onTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
+
+    _pageController.animateToPage(
+      index,
+      duration: Duration(milliseconds: 500),
+      curve: Curves.ease,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: IndexedStack(
-          index: _selectedIndex,
+        child: PageView(
+          controller: _pageController,
+          physics: const NeverScrollableScrollPhysics(),
+          onPageChanged: (index) {},
           children: _screens,
-        ),
+        )
       ),
       bottomNavigationBar: BottomNavBar(
         selectedIndex: _selectedIndex,
