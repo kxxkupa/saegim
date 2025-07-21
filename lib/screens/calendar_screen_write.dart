@@ -1,5 +1,5 @@
 /// 프로젝트 명 : 새김
-/// 페이지 분류 : 메모
+/// 페이지 분류 : 일정 추가
 /// 작업자 : 김건우
 /// 
 /// TODO
@@ -8,17 +8,13 @@
 
 import 'package:flutter/material.dart';
 
-class MemoScreen extends StatelessWidget {
-  const MemoScreen({super.key});
+class CalendarScreenWrite extends StatelessWidget {
+  const CalendarScreenWrite({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Container(
-          child: Text('Memo Screen'),
-        ),
-      ),
+      body: Text('Calendar Screen - Write'),
     );
   }
 }
