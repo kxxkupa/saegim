@@ -10,8 +10,10 @@ class ImageConstants {
   // 게시판 (40x40)
   static const String iconSave = '$iconPath/icon_save.png';
   static const String iconDelete = '$iconPath/icon_delete.png';
-  static const String iconAdd = '$iconPath/icon_circle_add.png';
   static const String iconClose = '$iconPath/icon_close.png';
+
+  // 게시판 글 추가 (60x60)
+  static const String iconAdd = '$iconPath/icon_circle_add.png';
   
   // 메모 페이지 캘린더 (24x24)
   static const String iconMemoDate = '$iconPath/icon_memo_date.png';

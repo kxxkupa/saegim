@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:saegim/const/public_style.dart';
 import 'package:saegim/widgets/tab_list.dart';
+import 'package:saegim/widgets/tab_list_schedule.dart';
 
 class HomeTab extends StatelessWidget {
   const HomeTab({super.key});
@@ -26,7 +27,7 @@ class HomeTab extends StatelessWidget {
                     child: Text(tabTitles[index]),
                   ),
                 );
-              }
+              },
             ),
             isScrollable: true,
             tabAlignment: TabAlignment.start,
@@ -36,7 +37,7 @@ class HomeTab extends StatelessWidget {
               borderSide: BorderSide(
                 width: 2.0,
                 color: primaryColor
-              )
+              ),
             ),
             unselectedLabelColor: bottomNavigationOff,
             labelPadding: EdgeInsets.symmetric(horizontal: 8.0),
@@ -49,16 +50,16 @@ class HomeTab extends StatelessWidget {
             child: TabBarView(
               children: [
                 // 일정
-                TabList(titleName: '일정', itemLength: 10,),
+                TabListSchedule(titleName: '일정'),
       
                 // 메모
-                TabList(titleName: '메모', itemLength: 5,),
+                TabList(titleName: '메모', itemLength: 6,),
       
                 // 디데이
                 TabList(titleName: '디데이', itemLength: 3,),
-              ]
-            )
-          )
+              ],
+            ),
+          ),
         ],
       ),
     );

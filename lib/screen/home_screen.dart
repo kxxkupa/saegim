@@ -6,8 +6,6 @@ import 'package:saegim/const/icon.dart';
 import 'package:saegim/const/public_style.dart';
 import 'package:saegim/widgets/home_tab.dart';
 import 'package:saegim/utils/routes.dart';
-import 'package:saegim/screen/calendar_screen.dart';
-import 'package:saegim/screen/memo_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -41,7 +39,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 60.0, horizontal: 28.0),
+          padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 28.0),
           child: Column(
             children: [
               // 오늘 날짜

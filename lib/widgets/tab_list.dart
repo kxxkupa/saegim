@@ -16,7 +16,7 @@ class TabList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isScrollable = itemLength > 10;
+    final bool isScrollable = itemLength > 1;
 
     return ListView.builder(
       physics: isScrollable ? BouncingScrollPhysics() : NeverScrollableScrollPhysics(),
@@ -34,7 +34,7 @@ class TabList extends StatelessWidget {
                   offset: Offset(0, 1),
                   blurRadius: 5.0,
                   color: Color(0xFF000000).withValues(alpha: 0.15),
-                )
+                ),
               ]
             ),
             child: Text('$titleName ${index + 1}'),

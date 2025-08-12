@@ -17,6 +17,9 @@ const bottomNavigationOff = Color(0xFF9A9A9A);
 
 // 폰트
 const TextStyle textBase = TextStyle(fontFamily: 'Pretendard', fontWeight: FontWeight.w600, color: primaryColor,);
+final TextStyle textSize10 = textBase.copyWith(fontSize: 10.0);
+final TextStyle textSize12 = textBase.copyWith(fontSize: 12.0);
+final TextStyle textSize14 = textBase.copyWith(fontSize: 14.0);
 final TextStyle textSize16 = textBase.copyWith(fontSize: 16.0);
 final TextStyle textSize18 = textBase.copyWith(fontSize: 18.0);
 final TextStyle textSize20 = textBase.copyWith(fontSize: 20.0);
