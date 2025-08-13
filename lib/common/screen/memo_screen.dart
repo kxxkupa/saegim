@@ -2,7 +2,7 @@
 // 분류 : 메모 화면
 
 import 'package:flutter/material.dart';
-import 'package:saegim/widgets/header.dart';
+import 'package:saegim/common/widgets/header.dart';
 
 class MemoScreen extends StatelessWidget {
   const MemoScreen({super.key});

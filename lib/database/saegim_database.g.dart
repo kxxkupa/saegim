@@ -22,12 +22,21 @@ class $SchedulesTable extends Schedules
       'PRIMARY KEY AUTOINCREMENT',
     ),
   );
-  static const VerificationMeta _contentMeta = const VerificationMeta(
-    'content',
+  static const VerificationMeta _titleMeta = const VerificationMeta('title');
+  @override
+  late final GeneratedColumn<String> title = GeneratedColumn<String>(
+    'title',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _categoryMeta = const VerificationMeta(
+    'category',
   );
   @override
-  late final GeneratedColumn<String> content = GeneratedColumn<String>(
-    'content',
+  late final GeneratedColumn<String> category = GeneratedColumn<String>(
+    'category',
     aliasedName,
     false,
     type: DriftSqlType.string,
@@ -64,8 +73,27 @@ class $SchedulesTable extends Schedules
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _contentMeta = const VerificationMeta(
+    'content',
+  );
   @override
-  List<GeneratedColumn> get $columns => [id, content, date, startTime, endTime];
+  late final GeneratedColumn<String> content = GeneratedColumn<String>(
+    'content',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    title,
+    category,
+    date,
+    startTime,
+    endTime,
+    content,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -81,13 +109,21 @@ class $SchedulesTable extends Schedules
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    if (data.containsKey('content')) {
+    if (data.containsKey('title')) {
       context.handle(
-        _contentMeta,
-        content.isAcceptableOrUnknown(data['content']!, _contentMeta),
+        _titleMeta,
+        title.isAcceptableOrUnknown(data['title']!, _titleMeta),
       );
     } else if (isInserting) {
-      context.missing(_contentMeta);
+      context.missing(_titleMeta);
+    }
+    if (data.containsKey('category')) {
+      context.handle(
+        _categoryMeta,
+        category.isAcceptableOrUnknown(data['category']!, _categoryMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_categoryMeta);
     }
     if (data.containsKey('date')) {
       context.handle(
@@ -113,6 +149,14 @@ class $SchedulesTable extends Schedules
     } else if (isInserting) {
       context.missing(_endTimeMeta);
     }
+    if (data.containsKey('content')) {
+      context.handle(
+        _contentMeta,
+        content.isAcceptableOrUnknown(data['content']!, _contentMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_contentMeta);
+    }
     return context;
   }
 
@@ -126,9 +170,13 @@ class $SchedulesTable extends Schedules
         DriftSqlType.int,
         data['${effectivePrefix}id'],
       )!,
-      content: attachedDatabase.typeMapping.read(
+      title: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
-        data['${effectivePrefix}content'],
+        data['${effectivePrefix}title'],
+      )!,
+      category: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}category'],
       )!,
       date: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
@@ -142,6 +190,10 @@ class $SchedulesTable extends Schedules
         DriftSqlType.int,
         data['${effectivePrefix}end_time'],
       )!,
+      content: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}content'],
+      )!,
     );
   }
 
@@ -153,35 +205,43 @@ class $SchedulesTable extends Schedules
 
 class Schedule extends DataClass implements Insertable<Schedule> {
   final int id;
-  final String content;
+  final String title;
+  final String category;
   final DateTime date;
   final int startTime;
   final int endTime;
+  final String content;
   const Schedule({
     required this.id,
-    required this.content,
+    required this.title,
+    required this.category,
     required this.date,
     required this.startTime,
     required this.endTime,
+    required this.content,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
-    map['content'] = Variable<String>(content);
+    map['title'] = Variable<String>(title);
+    map['category'] = Variable<String>(category);
     map['date'] = Variable<DateTime>(date);
     map['start_time'] = Variable<int>(startTime);
     map['end_time'] = Variable<int>(endTime);
+    map['content'] = Variable<String>(content);
     return map;
   }
 
   SchedulesCompanion toCompanion(bool nullToAbsent) {
     return SchedulesCompanion(
       id: Value(id),
-      content: Value(content),
+      title: Value(title),
+      category: Value(category),
       date: Value(date),
       startTime: Value(startTime),
       endTime: Value(endTime),
+      content: Value(content),
     );
   }
 
@@ -192,10 +252,12 @@ class Schedule extends DataClass implements Insertable<Schedule> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Schedule(
       id: serializer.fromJson<int>(json['id']),
-      content: serializer.fromJson<String>(json['content']),
+      title: serializer.fromJson<String>(json['title']),
+      category: serializer.fromJson<String>(json['category']),
       date: serializer.fromJson<DateTime>(json['date']),
       startTime: serializer.fromJson<int>(json['startTime']),
       endTime: serializer.fromJson<int>(json['endTime']),
+      content: serializer.fromJson<String>(json['content']),
     );
   }
   @override
@@ -203,33 +265,41 @@ class Schedule extends DataClass implements Insertable<Schedule> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'content': serializer.toJson<String>(content),
+      'title': serializer.toJson<String>(title),
+      'category': serializer.toJson<String>(category),
       'date': serializer.toJson<DateTime>(date),
       'startTime': serializer.toJson<int>(startTime),
       'endTime': serializer.toJson<int>(endTime),
+      'content': serializer.toJson<String>(content),
     };
   }
 
   Schedule copyWith({
     int? id,
-    String? content,
+    String? title,
+    String? category,
     DateTime? date,
     int? startTime,
     int? endTime,
+    String? content,
   }) => Schedule(
     id: id ?? this.id,
-    content: content ?? this.content,
+    title: title ?? this.title,
+    category: category ?? this.category,
     date: date ?? this.date,
     startTime: startTime ?? this.startTime,
     endTime: endTime ?? this.endTime,
+    content: content ?? this.content,
   );
   Schedule copyWithCompanion(SchedulesCompanion data) {
     return Schedule(
       id: data.id.present ? data.id.value : this.id,
-      content: data.content.present ? data.content.value : this.content,
+      title: data.title.present ? data.title.value : this.title,
+      category: data.category.present ? data.category.value : this.category,
       date: data.date.present ? data.date.value : this.date,
       startTime: data.startTime.present ? data.startTime.value : this.startTime,
       endTime: data.endTime.present ? data.endTime.value : this.endTime,
+      content: data.content.present ? data.content.value : this.content,
     );
   }
 
@@ -237,79 +307,100 @@ class Schedule extends DataClass implements Insertable<Schedule> {
   String toString() {
     return (StringBuffer('Schedule(')
           ..write('id: $id, ')
-          ..write('content: $content, ')
+          ..write('title: $title, ')
+          ..write('category: $category, ')
           ..write('date: $date, ')
           ..write('startTime: $startTime, ')
-          ..write('endTime: $endTime')
+          ..write('endTime: $endTime, ')
+          ..write('content: $content')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, content, date, startTime, endTime);
+  int get hashCode =>
+      Object.hash(id, title, category, date, startTime, endTime, content);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Schedule &&
           other.id == this.id &&
-          other.content == this.content &&
+          other.title == this.title &&
+          other.category == this.category &&
           other.date == this.date &&
           other.startTime == this.startTime &&
-          other.endTime == this.endTime);
+          other.endTime == this.endTime &&
+          other.content == this.content);
 }
 
 class SchedulesCompanion extends UpdateCompanion<Schedule> {
   final Value<int> id;
-  final Value<String> content;
+  final Value<String> title;
+  final Value<String> category;
   final Value<DateTime> date;
   final Value<int> startTime;
   final Value<int> endTime;
+  final Value<String> content;
   const SchedulesCompanion({
     this.id = const Value.absent(),
-    this.content = const Value.absent(),
+    this.title = const Value.absent(),
+    this.category = const Value.absent(),
     this.date = const Value.absent(),
     this.startTime = const Value.absent(),
     this.endTime = const Value.absent(),
+    this.content = const Value.absent(),
   });
   SchedulesCompanion.insert({
     this.id = const Value.absent(),
-    required String content,
+    required String title,
+    required String category,
     required DateTime date,
     required int startTime,
     required int endTime,
-  }) : content = Value(content),
+    required String content,
+  }) : title = Value(title),
+       category = Value(category),
        date = Value(date),
        startTime = Value(startTime),
-       endTime = Value(endTime);
+       endTime = Value(endTime),
+       content = Value(content);
   static Insertable<Schedule> custom({
     Expression<int>? id,
-    Expression<String>? content,
+    Expression<String>? title,
+    Expression<String>? category,
     Expression<DateTime>? date,
     Expression<int>? startTime,
     Expression<int>? endTime,
+    Expression<String>? content,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (content != null) 'content': content,
+      if (title != null) 'title': title,
+      if (category != null) 'category': category,
       if (date != null) 'date': date,
       if (startTime != null) 'start_time': startTime,
       if (endTime != null) 'end_time': endTime,
+      if (content != null) 'content': content,
     });
   }
 
   SchedulesCompanion copyWith({
     Value<int>? id,
-    Value<String>? content,
+    Value<String>? title,
+    Value<String>? category,
     Value<DateTime>? date,
     Value<int>? startTime,
     Value<int>? endTime,
+    Value<String>? content,
   }) {
     return SchedulesCompanion(
       id: id ?? this.id,
-      content: content ?? this.content,
+      title: title ?? this.title,
+      category: category ?? this.category,
       date: date ?? this.date,
       startTime: startTime ?? this.startTime,
       endTime: endTime ?? this.endTime,
+      content: content ?? this.content,
     );
   }
 
@@ -319,8 +410,11 @@ class SchedulesCompanion extends UpdateCompanion<Schedule> {
     if (id.present) {
       map['id'] = Variable<int>(id.value);
     }
-    if (content.present) {
-      map['content'] = Variable<String>(content.value);
+    if (title.present) {
+      map['title'] = Variable<String>(title.value);
+    }
+    if (category.present) {
+      map['category'] = Variable<String>(category.value);
     }
     if (date.present) {
       map['date'] = Variable<DateTime>(date.value);
@@ -331,6 +425,9 @@ class SchedulesCompanion extends UpdateCompanion<Schedule> {
     if (endTime.present) {
       map['end_time'] = Variable<int>(endTime.value);
     }
+    if (content.present) {
+      map['content'] = Variable<String>(content.value);
+    }
     return map;
   }
 
@@ -338,10 +435,12 @@ class SchedulesCompanion extends UpdateCompanion<Schedule> {
   String toString() {
     return (StringBuffer('SchedulesCompanion(')
           ..write('id: $id, ')
-          ..write('content: $content, ')
+          ..write('title: $title, ')
+          ..write('category: $category, ')
           ..write('date: $date, ')
           ..write('startTime: $startTime, ')
-          ..write('endTime: $endTime')
+          ..write('endTime: $endTime, ')
+          ..write('content: $content')
           ..write(')'))
         .toString();
   }
@@ -361,18 +460,22 @@ abstract class _$LocalDatabase extends GeneratedDatabase {
 typedef $$SchedulesTableCreateCompanionBuilder =
     SchedulesCompanion Function({
       Value<int> id,
-      required String content,
+      required String title,
+      required String category,
       required DateTime date,
       required int startTime,
       required int endTime,
+      required String content,
     });
 typedef $$SchedulesTableUpdateCompanionBuilder =
     SchedulesCompanion Function({
       Value<int> id,
-      Value<String> content,
+      Value<String> title,
+      Value<String> category,
       Value<DateTime> date,
       Value<int> startTime,
       Value<int> endTime,
+      Value<String> content,
     });
 
 class $$SchedulesTableFilterComposer
@@ -389,8 +492,13 @@ class $$SchedulesTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get content => $composableBuilder(
-    column: $table.content,
+  ColumnFilters<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get category => $composableBuilder(
+    column: $table.category,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -406,6 +514,11 @@ class $$SchedulesTableFilterComposer
 
   ColumnFilters<int> get endTime => $composableBuilder(
     column: $table.endTime,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get content => $composableBuilder(
+    column: $table.content,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -424,8 +537,13 @@ class $$SchedulesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get content => $composableBuilder(
-    column: $table.content,
+  ColumnOrderings<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get category => $composableBuilder(
+    column: $table.category,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -443,6 +561,11 @@ class $$SchedulesTableOrderingComposer
     column: $table.endTime,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get content => $composableBuilder(
+    column: $table.content,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$SchedulesTableAnnotationComposer
@@ -457,8 +580,11 @@ class $$SchedulesTableAnnotationComposer
   GeneratedColumn<int> get id =>
       $composableBuilder(column: $table.id, builder: (column) => column);
 
-  GeneratedColumn<String> get content =>
-      $composableBuilder(column: $table.content, builder: (column) => column);
+  GeneratedColumn<String> get title =>
+      $composableBuilder(column: $table.title, builder: (column) => column);
+
+  GeneratedColumn<String> get category =>
+      $composableBuilder(column: $table.category, builder: (column) => column);
 
   GeneratedColumn<DateTime> get date =>
       $composableBuilder(column: $table.date, builder: (column) => column);
@@ -468,6 +594,9 @@ class $$SchedulesTableAnnotationComposer
 
   GeneratedColumn<int> get endTime =>
       $composableBuilder(column: $table.endTime, builder: (column) => column);
+
+  GeneratedColumn<String> get content =>
+      $composableBuilder(column: $table.content, builder: (column) => column);
 }
 
 class $$SchedulesTableTableManager
@@ -502,30 +631,38 @@ class $$SchedulesTableTableManager
           updateCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
-                Value<String> content = const Value.absent(),
+                Value<String> title = const Value.absent(),
+                Value<String> category = const Value.absent(),
                 Value<DateTime> date = const Value.absent(),
                 Value<int> startTime = const Value.absent(),
                 Value<int> endTime = const Value.absent(),
+                Value<String> content = const Value.absent(),
               }) => SchedulesCompanion(
                 id: id,
-                content: content,
+                title: title,
+                category: category,
                 date: date,
                 startTime: startTime,
                 endTime: endTime,
+                content: content,
               ),
           createCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
-                required String content,
+                required String title,
+                required String category,
                 required DateTime date,
                 required int startTime,
                 required int endTime,
+                required String content,
               }) => SchedulesCompanion.insert(
                 id: id,
-                content: content,
+                title: title,
+                category: category,
                 date: date,
                 startTime: startTime,
                 endTime: endTime,
+                content: content,
               ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))

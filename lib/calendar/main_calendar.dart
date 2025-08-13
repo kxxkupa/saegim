@@ -2,8 +2,7 @@
 // 분류 : 캘린더
 
 import 'package:flutter/material.dart';
-import 'package:saegim/component/today_banner.dart';
-import 'package:saegim/const/public_style.dart';
+import 'package:saegim/common/const/public_style.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class MainCalendar extends StatelessWidget {

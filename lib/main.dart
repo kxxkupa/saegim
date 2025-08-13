@@ -3,12 +3,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:saegim/const/public_style.dart';
-import 'package:saegim/widgets/bottom_navigation.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:saegim/calendar/calendar_write.dart';
+import 'package:saegim/common/const/public_style.dart';
+import 'package:saegim/common/widgets/bottom_navigation.dart';
 import 'package:saegim/utils/routes.dart';
-import 'package:saegim/screen/calendar_screen.dart';
-import 'package:saegim/screen/home_screen.dart';
-import 'package:saegim/screen/memo_screen.dart';
+import 'package:saegim/calendar/calendar_screen.dart';
+import 'package:saegim/common/screen/home_screen.dart';
+import 'package:saegim/common/screen/memo_screen.dart';
 
 // DB
 import 'package:saegim/database/saegim_database.dart';
@@ -19,8 +21,6 @@ void main() async {
   await initializeDateFormatting('ko_KR', null);
 
   final database = LocalDatabase();
-
-  await database.saveTestSchedules();
 
   GetIt.I.registerSingleton<LocalDatabase>(database);
 
@@ -34,6 +34,16 @@ class Main extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('ko', 'KR'),
+        Locale('en', 'US'),
+      ],
+      locale: const Locale('ko', 'KR'),
       theme: ThemeData(
         scaffoldBackgroundColor: backgroundColor,
       ),
@@ -48,6 +58,9 @@ class Main extends StatelessWidget {
             break;
           case calendarRoute:
             page = const CalendarScreen();
+            break;
+          case calendarWriteRoute:
+            page = const CalendarWrite();
             break;
           case memoRoute:
             page = const MemoScreen();

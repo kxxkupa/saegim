@@ -2,11 +2,14 @@
 // 분류 : 일정 화면
 
 import 'package:flutter/material.dart';
-import 'package:saegim/component/main_calendar.dart';
-import 'package:saegim/component/schedule_list.dart';
-import 'package:saegim/component/today_banner.dart';
-import 'package:saegim/widgets/circle_add.dart';
-import 'package:saegim/widgets/header.dart';
+import 'package:intl/intl.dart';
+import 'package:saegim/calendar/main_calendar.dart';
+import 'package:saegim/common/widgets/schedule_list.dart';
+import 'package:saegim/calendar/today_banner.dart';
+import 'package:saegim/common/const/public_style.dart';
+import 'package:saegim/common/widgets/circle_add.dart';
+import 'package:saegim/common/widgets/header.dart';
+import 'package:saegim/utils/routes.dart';
 
 // DB
 import 'package:get_it/get_it.dart';
@@ -64,9 +67,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       child: Stack(
                         children: [
                           Center(
-                            child: Text('데이터가 없습니다.'),
+                            child: Text(
+                              '등록된 일정이 없습니다.',
+                              style: textSize16.copyWith(fontWeight: FontWeight.w500),
+                            ),
                           ),
-                          CircleAdd(),
+                          
+                          // 일정 추가
+                          CircleAdd(movePageRoute: calendarWriteRoute,),
                         ]
                       ),
                     );
@@ -78,20 +86,28 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     child: Stack(
                       children: [
                         ListView.builder(
+                          physics: snapshot.data!.length > 1 ? BouncingScrollPhysics() : NeverScrollableScrollPhysics(),
                           itemCount: snapshot.data!.length,
                           itemBuilder: (context, index) {
                             final schedule = snapshot.data![index];
+                            final DateTime _startTime = DateTime.fromMillisecondsSinceEpoch(schedule.startTime);
+                            final String _startTimeFormatted = DateFormat('HH:mm').format(_startTime);
+                            final DateTime _endTime = DateTime.fromMillisecondsSinceEpoch(schedule.endTime);
+                            final String _endTimeFormatted = DateFormat('HH:mm').format(_endTime);
+
                             return Padding(
                               padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
                               child: ScheduleList(
-                                startTime: schedule.startTime,
-                                endTime: schedule.endTime,
-                                content: schedule.content
+                                startTime: _startTimeFormatted,
+                                endTime: _endTimeFormatted,
+                                title: schedule.title
                               ),
                             );
                           },
                         ),
-                        CircleAdd(),
+
+                        // 일정 추가
+                        CircleAdd(movePageRoute: calendarWriteRoute,),
                       ],
                     ),
                   );

@@ -2,7 +2,7 @@
 // 분류 : 시작 화면 - 탭 메뉴 (리스트)
 
 import 'package:flutter/material.dart';
-import 'package:saegim/const/public_style.dart';
+import 'package:saegim/common/const/public_style.dart';
 
 class TabList extends StatelessWidget {
   final String titleName;

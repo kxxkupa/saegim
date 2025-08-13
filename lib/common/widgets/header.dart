@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:saegim/const/icon.dart';
-import 'package:saegim/const/public_style.dart';
-import 'package:saegim/screen/home_screen.dart';
+import 'package:saegim/common/const/icon.dart';
+import 'package:saegim/common/const/public_style.dart';
+import 'package:saegim/common/screen/home_screen.dart';
+import 'package:saegim/utils/routes.dart';
 
 class Header extends StatelessWidget {
   final String pageTitle;
@@ -27,16 +28,7 @@ class Header extends StatelessWidget {
           // 홈 버튼
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pushAndRemoveUntil(
-                PageRouteBuilder(
-                  pageBuilder: (context, animation, secondaryAnimation) => const HomeScreen(),
-                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                    return FadeTransition(opacity: animation, child: child,);
-                  },
-                  transitionDuration: const Duration(milliseconds: 1),
-                ),
-                (Route<dynamic> route) => false,
-              );
+              Navigator.of(context).pushNamed(homeRoute);
             },
             child: Image.asset(
               ImageConstants.iconHome,

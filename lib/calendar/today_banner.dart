@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:saegim/const/public_style.dart';
+import 'package:saegim/common/const/public_style.dart';
 
 class TodayBanner extends StatelessWidget {
   final DateTime selectedDate;
@@ -37,17 +37,26 @@ class TodayBanner extends StatelessWidget {
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 33.0),
+      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 33.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
             '${selectedDate.year}년 ${selectedDate.month}월 ${selectedDate.day}일 ${getWeekdayString(weekday)}',
-            style: textSize20,
+            style: textSize18,
           ),
-          Text(
-            '$count개',
-            style: textSize20,
+          Container(
+            padding: const EdgeInsets.all(10.0),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: primaryColor,
+            ),
+            child: Center(
+              child: Text(
+                '$count',
+                style: textSize14.copyWith(color: backgroundColor,),
+              ),
+            ),
           )
         ],
       ),

@@ -2,9 +2,9 @@
 // 분류 : 시작 화면
 
 import 'package:flutter/material.dart';
-import 'package:saegim/const/icon.dart';
-import 'package:saegim/const/public_style.dart';
-import 'package:saegim/widgets/home_tab.dart';
+import 'package:saegim/common/const/icon.dart';
+import 'package:saegim/common/const/public_style.dart';
+import 'package:saegim/common/widgets/home_tab.dart';
 import 'package:saegim/utils/routes.dart';
 
 class HomeScreen extends StatelessWidget {

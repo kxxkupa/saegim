@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:saegim/const/public_style.dart';
+import 'package:saegim/common/const/public_style.dart';
 
 class ScheduleList extends StatelessWidget {
-  final int startTime;
-  final int endTime;
-  final String content;
+  final String startTime;
+  final String endTime;
+  final String title;
 
   const ScheduleList({
     super.key,
     required this.startTime,
     required this.endTime,
-    required this.content,
+    required this.title,
   });
 
   @override
@@ -37,7 +37,7 @@ class ScheduleList extends StatelessWidget {
           SizedBox(width: 12.0,),
       
           // 내용
-          _Content(content: content)
+          _Title(title: title)
         ],
       ),
     );
@@ -46,8 +46,8 @@ class ScheduleList extends StatelessWidget {
 
 // 시간
 class _Time extends StatelessWidget {
-  final int startTime;
-  final int endTime;
+  final String startTime;
+  final String endTime;
 
   const _Time({
     super.key,
@@ -61,11 +61,11 @@ class _Time extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Text(
-          '${startTime.toString().padLeft(2, '0')}:00',
+          startTime.toString().padLeft(2, '0'),
           style: textSize16,
         ),
         Text(
-          '${endTime.toString().padLeft(2, '0')}:00',
+          endTime.toString().padLeft(2, '0'),
           style: textSize10,
         ),
       ],
@@ -74,19 +74,19 @@ class _Time extends StatelessWidget {
 }
 
 // 내용
-class _Content extends StatelessWidget {
-  final String content;
+class _Title extends StatelessWidget {
+  final String title;
 
-  const _Content({
+  const _Title({
     super.key,
-    required this.content
+    required this.title
   });
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Text(
-        content,
+        title,
         style: textSize16,
       )
     );

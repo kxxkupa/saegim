@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:saegim/const/icon.dart';
-import 'package:saegim/const/public_style.dart';
+import 'package:saegim/common/const/icon.dart';
+import 'package:saegim/common/const/public_style.dart';
 import 'package:saegim/utils/routes.dart';
 
 class BottomNavigation extends StatelessWidget {
@@ -25,7 +25,7 @@ class BottomNavigation extends StatelessWidget {
         children: [
           // 일정
           GestureDetector(
-            onTap: currentRoute == calendarRoute
+            onTap: currentRoute == calendarRoute || currentRoute == calendarWriteRoute
                 ? null
                 : () {
                     Navigator.of(context).pushNamedAndRemoveUntil(
@@ -37,13 +37,17 @@ class BottomNavigation extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  currentRoute == calendarRoute ? ImageConstants.bottomMenuCalendarOn : ImageConstants.bottomMenuCalendarOff,
+                  currentRoute == calendarRoute || currentRoute == calendarWriteRoute
+                    ? ImageConstants.bottomMenuCalendarOn
+                    : ImageConstants.bottomMenuCalendarOff,
                   width: 28.0,
                   height: 28.0,
                 ),
                 Text(
                   '일정',
-                  style: currentRoute == calendarRoute ? textBase.copyWith(color: backgroundColor) : textBase.copyWith(color: bottomNavigationOff),
+                  style: currentRoute == calendarRoute || currentRoute == calendarWriteRoute
+                            ? textBase.copyWith(color: backgroundColor)
+                            : textBase.copyWith(color: bottomNavigationOff),
                 )
               ],
             ),

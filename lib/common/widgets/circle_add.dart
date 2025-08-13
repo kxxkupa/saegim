@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:saegim/const/icon.dart';
+import 'package:saegim/common/const/icon.dart';
 
 class CircleAdd extends StatelessWidget {
-  const CircleAdd({super.key});
+  final String movePageRoute;
+
+  const CircleAdd({
+    super.key,
+    required this.movePageRoute,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +16,7 @@ class CircleAdd extends StatelessWidget {
       right: 0,
       child: GestureDetector(
         onTap: () {
-        
+          Navigator.of(context).pushNamed(movePageRoute);
         },
         child: Container(
           decoration: BoxDecoration(
