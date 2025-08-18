@@ -12,6 +12,9 @@ LazyDatabase _openConnection() {
   return LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();
     final file = File(p.join(dbFolder.path, 'db.sqlite'));
+
+    print('Drift DB 파일 경로: ${file.path}');
+
     return NativeDatabase(file);
   });
 }

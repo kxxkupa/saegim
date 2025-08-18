@@ -1,22 +1,67 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:saegim/common/const/public_style.dart';
 import 'package:saegim/common/widgets/custom_text_field.dart';
+import 'package:saegim/database/saegim_database.dart';
 
-class BoardSchedule extends StatelessWidget {
-  final ValueChanged<String?> onTitleSaved;
-  final ValueChanged<String?> onCategorySaved;
-  final ValueChanged<String?> onStartTimeSaved;
-  final ValueChanged<String?> onEndTimeSaved;
-  final ValueChanged<String?> onContentSaved;
+class BoardSchedule extends StatefulWidget {
+  final Schedule? schedule;
+  final ValueChanged<String?>? onTitleSaved;
+  final ValueChanged<String?>? onCategorySaved;
+  final ValueChanged<String?>? onStartTimeSaved;
+  final ValueChanged<String?>? onEndTimeSaved;
+  final ValueChanged<String?>? onContentSaved;
 
   const BoardSchedule({
     super.key,
-    required this.onTitleSaved,
-    required this.onCategorySaved,
-    required this.onStartTimeSaved,
-    required this.onEndTimeSaved,
-    required this.onContentSaved,
+    this.schedule,
+    this.onTitleSaved,
+    this.onCategorySaved,
+    this.onStartTimeSaved,
+    this.onEndTimeSaved,
+    this.onContentSaved,
   });
+
+  @override
+  State<BoardSchedule> createState() => _BoardScheduleState();
+}
+
+class _BoardScheduleState extends State<BoardSchedule> {
+  // TextFormField를 제어할 컨트롤러 선언
+  late TextEditingController titleController;
+  late TextEditingController categoryController;
+  late TextEditingController startTimeController;
+  late TextEditingController endTimeController;
+  late TextEditingController contentController;
+  
+  @override
+  void initState() {
+    super.initState();
+
+    titleController = TextEditingController(text: widget.schedule?.title);
+    categoryController = TextEditingController(text: widget.schedule?.category);
+    startTimeController = TextEditingController(
+      text: widget.schedule?.startTime != null
+        ? DateFormat('yyyy년 MM월 dd일 HH시 mm분')
+            .format(DateTime.fromMillisecondsSinceEpoch(widget.schedule!.startTime))
+        : null);
+    endTimeController = TextEditingController(
+      text: widget.schedule?.endTime != null
+        ? DateFormat('yyyy년 MM월 dd일 HH시 mm분')
+            .format(DateTime.fromMillisecondsSinceEpoch(widget.schedule!.endTime))
+        : null);
+    contentController = TextEditingController(text: widget.schedule?.content);
+  }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    categoryController.dispose();
+    startTimeController.dispose();
+    endTimeController.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,26 +77,27 @@ class BoardSchedule extends StatelessWidget {
       child: Column(
         children: [
           // 제목
-          CustomTextField(label: '제목', isTime: false, onSaved: onTitleSaved, validator: contentValidator,),
+          CustomTextField(schedule: widget.schedule, controller: titleController, label: '제목', isTime: false, onSaved: widget.onTitleSaved!, validator: contentValidator,),
           SizedBox(height: 4.0,),
       
           // 분류
-          CustomTextField(label: '분류', isTime: false, onSaved: onCategorySaved, validator: contentValidator,),
+          CustomTextField(schedule: widget.schedule, controller: categoryController, label: '분류', isTime: false, onSaved: widget.onCategorySaved!, validator: contentValidator,),
           SizedBox(height: 4.0,),      
 
           // 시작 시간
-          CustomTextField(label: '시작', isTime: true, onSaved: onStartTimeSaved, validator: contentValidator,),
+          CustomTextField(schedule: widget.schedule, controller: startTimeController, label: '시작', isTime: true, onSaved: widget.onStartTimeSaved!, validator: contentValidator,),
           SizedBox(height: 4.0,),
 
           // 끝 시간
-          CustomTextField(label: '끝', isTime: true, onSaved: onEndTimeSaved, validator: contentValidator,),
+          CustomTextField(schedule: widget.schedule, controller: endTimeController, label: '끝', isTime: true, onSaved: widget.onEndTimeSaved!, validator: contentValidator,),
           SizedBox(height: 10.0,),
 
           // 내용
           Expanded(
             child: TextFormField(
-              onSaved: onContentSaved,
+              onSaved: widget.onContentSaved,
               validator: contentValidator,
+              controller: contentController,
               maxLines: null,
               expands: true,
               cursorColor: primaryColor,

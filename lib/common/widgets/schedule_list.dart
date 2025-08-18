@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:saegim/common/const/public_style.dart';
+import 'package:saegim/database/saegim_database.dart';
+import 'package:saegim/utils/routes.dart';
 
 class ScheduleList extends StatelessWidget {
+  final Schedule schedule;
   final String startTime;
   final String endTime;
   final String title;
 
   const ScheduleList({
     super.key,
+    required this.schedule,
     required this.startTime,
     required this.endTime,
     required this.title,
@@ -15,30 +19,35 @@ class ScheduleList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: listBackground,
-        borderRadius: BorderRadius.circular(8.0),
-        boxShadow: [
-          BoxShadow(
-            offset: Offset(0, 1),
-            blurRadius: 5.0,
-            color: Color(0xFF000000).withValues(alpha: 0.15),
-          ),
-        ]
-      ),
-      padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // 시간
-          _Time(startTime: startTime, endTime: endTime),
-      
-          SizedBox(width: 12.0,),
-      
-          // 내용
-          _Title(title: title)
-        ],
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).pushNamed(calendarViewRoute, arguments: schedule);
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: listBackground,
+          borderRadius: BorderRadius.circular(8.0),
+          boxShadow: [
+            BoxShadow(
+              offset: Offset(0, 1),
+              blurRadius: 5.0,
+              color: Color(0xFF000000).withValues(alpha: 0.15),
+            ),
+          ]
+        ),
+        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // 시간
+            _Time(startTime: startTime, endTime: endTime),
+        
+            SizedBox(width: 12.0,),
+        
+            // 내용
+            _Title(title: title)
+          ],
+        ),
       ),
     );
   }

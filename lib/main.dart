@@ -4,8 +4,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:saegim/calendar/calendar_view.dart';
 import 'package:saegim/calendar/calendar_write.dart';
 import 'package:saegim/common/const/public_style.dart';
+import 'package:saegim/common/service/schedule_service.dart';
 import 'package:saegim/common/widgets/bottom_navigation.dart';
 import 'package:saegim/utils/routes.dart';
 import 'package:saegim/calendar/calendar_screen.dart';
@@ -16,13 +18,21 @@ import 'package:saegim/common/screen/memo_screen.dart';
 import 'package:saegim/database/saegim_database.dart';
 import 'package:get_it/get_it.dart';
 
+final GetIt getIt = GetIt.I;
+
+void setupGetIt() {
+  final database = LocalDatabase();
+  getIt.registerSingleton<LocalDatabase>(database);
+
+  // 2. 각 서비스에 LocalDatabase 인스턴스를 전달하며 등록
+  getIt.registerSingleton<ScheduleService>(ScheduleService());
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting('ko_KR', null);
 
-  final database = LocalDatabase();
-
-  GetIt.I.registerSingleton<LocalDatabase>(database);
+  setupGetIt();
 
   runApp(Main());
 }
@@ -61,6 +71,9 @@ class Main extends StatelessWidget {
             break;
           case calendarWriteRoute:
             page = const CalendarWrite();
+            break;
+          case calendarViewRoute:
+            page = const CalendarView();
             break;
           case memoRoute:
             page = const MemoScreen();

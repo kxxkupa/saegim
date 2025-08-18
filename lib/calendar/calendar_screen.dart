@@ -90,16 +90,17 @@ class _CalendarScreenState extends State<CalendarScreen> {
                           itemCount: snapshot.data!.length,
                           itemBuilder: (context, index) {
                             final schedule = snapshot.data![index];
-                            final DateTime _startTime = DateTime.fromMillisecondsSinceEpoch(schedule.startTime);
-                            final String _startTimeFormatted = DateFormat('HH:mm').format(_startTime);
-                            final DateTime _endTime = DateTime.fromMillisecondsSinceEpoch(schedule.endTime);
-                            final String _endTimeFormatted = DateFormat('HH:mm').format(_endTime);
+                            final DateTime startTime = DateTime.fromMillisecondsSinceEpoch(schedule.startTime);
+                            final String startTimeFormatted = DateFormat('HH:mm').format(startTime);
+                            final DateTime endTime = DateTime.fromMillisecondsSinceEpoch(schedule.endTime);
+                            final String endTimeFormatted = DateFormat('HH:mm').format(endTime);
 
                             return Padding(
                               padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
                               child: ScheduleList(
-                                startTime: _startTimeFormatted,
-                                endTime: _endTimeFormatted,
+                                schedule: schedule,
+                                startTime: startTimeFormatted,
+                                endTime: endTimeFormatted,
                                 title: schedule.title
                               ),
                             );

@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:saegim/common/const/public_style.dart';
+import 'package:saegim/database/saegim_database.dart';
 
 class CustomTextField extends StatefulWidget {
+  final Schedule? schedule;
+  final TextEditingController? controller;
   final String label;
   final bool isTime;
   final FormFieldSetter<String> onSaved;
@@ -11,6 +14,8 @@ class CustomTextField extends StatefulWidget {
 
   const CustomTextField({
     super.key,
+    this.schedule,
+    this.controller,
     required this.label,
     required this.isTime,
     required this.onSaved,
@@ -22,7 +27,6 @@ class CustomTextField extends StatefulWidget {
 }
 
 class _CustomTextFieldState extends State<CustomTextField> {
-  final TextEditingController dateController = TextEditingController();
   DateTime? selectedDateTime;
 
   // 날짜/시간 선택기를 띄우는 함수
@@ -58,7 +62,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         setState(() {
           selectedDateTime = finalDateTime;
           // _dateController에 포맷된 문자열을 할당
-          dateController.text = DateFormat('yyyy년 MM월 dd일 HH시 mm분').format(finalDateTime);
+          widget.controller!.text = DateFormat('yyyy년 MM월 dd일 HH시 mm분').format(finalDateTime);
         });
       }
     }
@@ -97,7 +101,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 child: TextFormField(
                   onSaved: widget.onSaved,
                   validator: widget.validator,
-                  controller: dateController,
+                  controller: widget.controller,
                   readOnly: true,
                   onTap: () => selectDateTime(context),
                   decoration: myInputDecoration.copyWith(hintText: '날짜/시간을 선택하세요'),
@@ -108,6 +112,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 child: TextFormField(
                   onSaved: widget.onSaved,
                   validator: widget.validator,
+                  controller: widget.controller,
                   cursorColor: primaryColor,
                   maxLines: 1,
                   decoration: myInputDecoration.copyWith(hintText: '내용을 입력하세요'),
