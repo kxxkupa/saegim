@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:saegim/common/const/public_style.dart';
 import 'package:saegim/common/widgets/tab_list.dart';
+import 'package:saegim/common/widgets/tab_list_memo.dart';
 import 'package:saegim/common/widgets/tab_list_schedule.dart';
 
 class HomeTab extends StatelessWidget {
@@ -53,7 +54,7 @@ class HomeTab extends StatelessWidget {
                 TabListSchedule(titleName: '일정'),
       
                 // 메모
-                TabList(titleName: '메모', itemLength: 6,),
+                TabListMemo(titleName: '메모'),
       
                 // 디데이
                 TabList(titleName: '디데이', itemLength: 3,),

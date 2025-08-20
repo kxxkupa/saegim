@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:saegim/common/const/icon.dart';
 import 'package:saegim/common/const/public_style.dart';
-import 'package:saegim/common/screen/home_screen.dart';
 import 'package:saegim/utils/routes.dart';
 
 class Header extends StatelessWidget {

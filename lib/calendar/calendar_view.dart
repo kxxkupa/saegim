@@ -51,11 +51,11 @@ class _CalendarWriteState extends State<CalendarView> {
     super.didChangeDependencies();
     // ModalRoute에서 schedule 객체를 가져와 상태 변수에 저장
     final arguments = ModalRoute.of(context)!.settings.arguments;
-    if (arguments != null && arguments is Schedule) {
+    if(arguments != null && arguments is Schedule){
       _schedule = arguments;
       
       // onSaved 콜백이 없는 경우를 대비해 초기값을 설정
-      if (title.isEmpty) {
+      if(title.isEmpty){
         title = _schedule!.title;
         category = _schedule!.category;
         startTime = DateTime.fromMillisecondsSinceEpoch(_schedule!.startTime);
@@ -115,7 +115,7 @@ class _CalendarWriteState extends State<CalendarView> {
           child: Column(
             children: [
               // 게시판 헤더
-              BoardHeader(isWrite: false, onSave: saveForm, onDelete: removeForm),
+              BoardHeader(exit: calendarRoute, isWrite: false, onSave: saveForm, onDelete: removeForm),
               SizedBox(height: 40.0,),
           
               // 게시판 본문

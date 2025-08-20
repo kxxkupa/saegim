@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:saegim/common/const/icon.dart';
-import 'package:saegim/utils/routes.dart';
 
 class BoardHeader extends StatelessWidget {
+  final String exit;
   final bool isWrite;
   final VoidCallback onSave;
   final VoidCallback? onDelete;
 
   const BoardHeader({
     super.key,
+    required this.exit,
     required this.isWrite,
     required this.onSave,
     this.onDelete,
@@ -23,7 +24,7 @@ class BoardHeader extends StatelessWidget {
         GestureDetector(
           onTap: () {
             Navigator.of(context).pushNamedAndRemoveUntil(
-              calendarRoute,
+              exit,
               (Route<dynamic> route) => false,
             );
           },

@@ -37,7 +37,7 @@ class BottomNavigation extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  currentRoute == calendarRoute || currentRoute == calendarWriteRoute
+                  currentRoute == calendarRoute || currentRoute == calendarWriteRoute || currentRoute == calendarViewRoute
                     ? ImageConstants.bottomMenuCalendarOn
                     : ImageConstants.bottomMenuCalendarOff,
                   width: 28.0,
@@ -45,7 +45,7 @@ class BottomNavigation extends StatelessWidget {
                 ),
                 Text(
                   '일정',
-                  style: currentRoute == calendarRoute || currentRoute == calendarWriteRoute
+                  style: currentRoute == calendarRoute || currentRoute == calendarWriteRoute || currentRoute == calendarViewRoute
                             ? textBase.copyWith(color: backgroundColor)
                             : textBase.copyWith(color: bottomNavigationOff),
                 )
@@ -67,13 +67,17 @@ class BottomNavigation extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  currentRoute == memoRoute ? ImageConstants.bottomMenuMemoOn : ImageConstants.bottomMenuMemoOff,
+                  currentRoute == memoRoute || currentRoute == memoWriteRoute || currentRoute == memoViewRoute
+                    ? ImageConstants.bottomMenuMemoOn
+                    : ImageConstants.bottomMenuMemoOff,
                   width: 28.0,
                   height: 28.0,
                 ),
                 Text(
                   '메모',
-                  style: currentRoute == memoRoute ? textBase.copyWith(color: backgroundColor) : textBase.copyWith(color: bottomNavigationOff),
+                  style: currentRoute == memoRoute || currentRoute == memoWriteRoute || currentRoute == memoViewRoute
+                            ? textBase.copyWith(color: backgroundColor)
+                            : textBase.copyWith(color: bottomNavigationOff),
                 )
               ],
             ),

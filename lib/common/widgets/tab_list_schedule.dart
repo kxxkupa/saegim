@@ -4,7 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:get_it/get_it.dart';
-import 'package:saegim/common/widgets/schedule_list.dart';
+import 'package:saegim/calendar/schedule_list.dart';
 import 'package:saegim/common/const/public_style.dart';
 import 'package:saegim/database/saegim_database.dart';
 

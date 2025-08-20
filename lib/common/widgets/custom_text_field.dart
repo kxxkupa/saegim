@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:saegim/common/const/public_style.dart';
 import 'package:saegim/database/saegim_database.dart';
 
 class CustomTextField extends StatefulWidget {
   final Schedule? schedule;
+  final Memo? memo;
   final TextEditingController? controller;
   final String label;
   final bool isTime;
@@ -15,6 +15,7 @@ class CustomTextField extends StatefulWidget {
   const CustomTextField({
     super.key,
     this.schedule,
+    this.memo,
     this.controller,
     required this.label,
     required this.isTime,

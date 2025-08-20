@@ -1,30 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
-import 'package:saegim/calendar/board_schedule.dart';
-import 'package:saegim/common/service/schedule_service.dart';
+import 'package:saegim/common/service/memo_service.dart';
 import 'package:saegim/common/widgets/board_header.dart';
+import 'package:saegim/memo/board_memo.dart';
 import 'package:saegim/utils/routes.dart';
 
-class CalendarWrite extends StatefulWidget {
-  const CalendarWrite({super.key});
+
+class MemoWrite extends StatefulWidget {
+  const MemoWrite({super.key});
 
   @override
-  State<CalendarWrite> createState() => _CalendarWriteState();
+  State<MemoWrite> createState() => _MemoWriteState();
 }
 
-class _CalendarWriteState extends State<CalendarWrite> {
+class _MemoWriteState extends State<MemoWrite> {
   // GlobalKey 생성
   final GlobalKey<FormState> formKey = GlobalKey();
 
-  final scheduleBoardService = GetIt.I<ScheduleService>();
+  final memoBoardService = GetIt.I<MemoService>();
 
   // 데이터를 저장할 변수들
   String title = '';
-  String category = '';
-  DateTime? date;
-  DateTime? startTime;
-  DateTime? endTime;
   String content = '';
 
   // String으로 콜백받은 데이터를 DateTime으로 변환하는 함수
@@ -34,7 +31,7 @@ class _CalendarWriteState extends State<CalendarWrite> {
     }
 
     try {
-      return DateFormat('yyyy년 MM월 dd일 HH시 mm분').parse(dateTimeString);
+      return DateFormat('yyyy년 MM월 dd일').parse(dateTimeString);
     } catch(e) {
       print('날짜/시간 파싱 오류: $e');
       return null;
@@ -46,20 +43,17 @@ class _CalendarWriteState extends State<CalendarWrite> {
     if(formKey.currentState!.validate()){
       formKey.currentState!.save();
 
-      await scheduleBoardService.saveForm(
+      await memoBoardService.saveForm(
         context,
         null,
         formKey,
         title,
-        category,
-        startTime!,
-        endTime!,
-        content
+        content,
       );
     }
 
     if(mounted){
-      Navigator.of(context).pushNamed(calendarRoute);
+      Navigator.of(context).pushNamed(memoRoute);
     }
   }
 
@@ -73,16 +67,13 @@ class _CalendarWriteState extends State<CalendarWrite> {
           child: Column(
             children: [
               // 게시판 헤더
-              BoardHeader(exit: calendarRoute, isWrite: true, onSave: saveForm),
-              SizedBox(height: 40.0,),
+              BoardHeader(exit: memoRoute, isWrite: true, onSave: saveForm),
+              SizedBox(height: 30.0,),
           
               // 게시판 본문
-              BoardSchedule(
+              BoardMemo(
                 onTitleSaved: (val) => title = val ?? '',
-                onCategorySaved: (val) => category = val ?? '',
-                onStartTimeSaved: (val) => startTime = parseDateTime(val),
-                onEndTimeSaved: (val) => endTime = parseDateTime(val),
-                onContentSaved: (val) => content = val ?? ''
+                onContentSaved: (val) => content = val ?? '',
               ),
             ],
           ),

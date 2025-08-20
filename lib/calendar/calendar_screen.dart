@@ -4,7 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:saegim/calendar/main_calendar.dart';
-import 'package:saegim/common/widgets/schedule_list.dart';
+import 'package:saegim/calendar/schedule_list.dart';
 import 'package:saegim/calendar/today_banner.dart';
 import 'package:saegim/common/const/public_style.dart';
 import 'package:saegim/common/widgets/circle_add.dart';
@@ -56,12 +56,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 stream: GetIt.I<LocalDatabase>().watchSchedules(selectedDate),
                 builder: (context, snapshot) {
                   // 1. 오류 발생 시 오류 메시지 표시
-                  if (snapshot.hasError) {
+                  if(snapshot.hasError){
                     return Center(child: Text('오류가 발생했습니다: ${snapshot.error}'));
                   }
 
                   // 2. 데이터가 없을 때
-                  if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  if(!snapshot.hasData || snapshot.data!.isEmpty){
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 28.0,),
                       child: Stack(
