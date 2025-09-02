@@ -133,44 +133,6 @@ class HomeScreen extends StatelessWidget {
                         )
                       ),
                     ),
-                    SizedBox(width: 16.0,),
-                    // 디데이
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: primaryColor,
-                            boxShadow: [
-                              BoxShadow(
-                                offset: const Offset(0, 1),
-                                blurRadius: 5.0,
-                                color: Color(0xFF000000).withValues(alpha: 0.15),
-                              ),
-                            ],
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                ImageConstants.mainMenuDday,
-                                width: 21.0,
-                                height: 21.0,
-                              ),
-                              SizedBox(width: 8.0,),
-                              Text(
-                                '디데이',
-                                style: textSize18.copyWith(color: backgroundColor),
-                              )
-                            ],
-                          ),
-                        )
-                      ),
-                    ),
                   ],
                 ),
               ),

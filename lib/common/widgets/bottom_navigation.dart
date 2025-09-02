@@ -82,27 +82,6 @@ class BottomNavigation extends StatelessWidget {
               ],
             ),
           ),
-          
-          // 디데이
-          GestureDetector(
-            onTap: () {
-
-            },
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  ImageConstants.bottomMenuDdayOff,
-                  width: 28.0,
-                  height: 28.0,
-                ),
-                Text(
-                  '디데이',
-                  style: currentRoute == ddayRoute ? textBase.copyWith(color: backgroundColor) : textBase.copyWith(color: bottomNavigationOff),
-                )
-              ],
-            ),
-          ),
         ],
       ),
     );

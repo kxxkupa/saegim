@@ -55,22 +55,22 @@ class $SchedulesTable extends Schedules
     'startTime',
   );
   @override
-  late final GeneratedColumn<int> startTime = GeneratedColumn<int>(
+  late final GeneratedColumn<DateTime> startTime = GeneratedColumn<DateTime>(
     'start_time',
     aliasedName,
     false,
-    type: DriftSqlType.int,
+    type: DriftSqlType.dateTime,
     requiredDuringInsert: true,
   );
   static const VerificationMeta _endTimeMeta = const VerificationMeta(
     'endTime',
   );
   @override
-  late final GeneratedColumn<int> endTime = GeneratedColumn<int>(
+  late final GeneratedColumn<DateTime> endTime = GeneratedColumn<DateTime>(
     'end_time',
     aliasedName,
     false,
-    type: DriftSqlType.int,
+    type: DriftSqlType.dateTime,
     requiredDuringInsert: true,
   );
   static const VerificationMeta _contentMeta = const VerificationMeta(
@@ -183,11 +183,11 @@ class $SchedulesTable extends Schedules
         data['${effectivePrefix}date'],
       )!,
       startTime: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
+        DriftSqlType.dateTime,
         data['${effectivePrefix}start_time'],
       )!,
       endTime: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
+        DriftSqlType.dateTime,
         data['${effectivePrefix}end_time'],
       )!,
       content: attachedDatabase.typeMapping.read(
@@ -208,8 +208,8 @@ class Schedule extends DataClass implements Insertable<Schedule> {
   final String title;
   final String category;
   final DateTime date;
-  final int startTime;
-  final int endTime;
+  final DateTime startTime;
+  final DateTime endTime;
   final String content;
   const Schedule({
     required this.id,
@@ -227,8 +227,8 @@ class Schedule extends DataClass implements Insertable<Schedule> {
     map['title'] = Variable<String>(title);
     map['category'] = Variable<String>(category);
     map['date'] = Variable<DateTime>(date);
-    map['start_time'] = Variable<int>(startTime);
-    map['end_time'] = Variable<int>(endTime);
+    map['start_time'] = Variable<DateTime>(startTime);
+    map['end_time'] = Variable<DateTime>(endTime);
     map['content'] = Variable<String>(content);
     return map;
   }
@@ -255,8 +255,8 @@ class Schedule extends DataClass implements Insertable<Schedule> {
       title: serializer.fromJson<String>(json['title']),
       category: serializer.fromJson<String>(json['category']),
       date: serializer.fromJson<DateTime>(json['date']),
-      startTime: serializer.fromJson<int>(json['startTime']),
-      endTime: serializer.fromJson<int>(json['endTime']),
+      startTime: serializer.fromJson<DateTime>(json['startTime']),
+      endTime: serializer.fromJson<DateTime>(json['endTime']),
       content: serializer.fromJson<String>(json['content']),
     );
   }
@@ -268,8 +268,8 @@ class Schedule extends DataClass implements Insertable<Schedule> {
       'title': serializer.toJson<String>(title),
       'category': serializer.toJson<String>(category),
       'date': serializer.toJson<DateTime>(date),
-      'startTime': serializer.toJson<int>(startTime),
-      'endTime': serializer.toJson<int>(endTime),
+      'startTime': serializer.toJson<DateTime>(startTime),
+      'endTime': serializer.toJson<DateTime>(endTime),
       'content': serializer.toJson<String>(content),
     };
   }
@@ -279,8 +279,8 @@ class Schedule extends DataClass implements Insertable<Schedule> {
     String? title,
     String? category,
     DateTime? date,
-    int? startTime,
-    int? endTime,
+    DateTime? startTime,
+    DateTime? endTime,
     String? content,
   }) => Schedule(
     id: id ?? this.id,
@@ -338,8 +338,8 @@ class SchedulesCompanion extends UpdateCompanion<Schedule> {
   final Value<String> title;
   final Value<String> category;
   final Value<DateTime> date;
-  final Value<int> startTime;
-  final Value<int> endTime;
+  final Value<DateTime> startTime;
+  final Value<DateTime> endTime;
   final Value<String> content;
   const SchedulesCompanion({
     this.id = const Value.absent(),
@@ -355,8 +355,8 @@ class SchedulesCompanion extends UpdateCompanion<Schedule> {
     required String title,
     required String category,
     required DateTime date,
-    required int startTime,
-    required int endTime,
+    required DateTime startTime,
+    required DateTime endTime,
     required String content,
   }) : title = Value(title),
        category = Value(category),
@@ -369,8 +369,8 @@ class SchedulesCompanion extends UpdateCompanion<Schedule> {
     Expression<String>? title,
     Expression<String>? category,
     Expression<DateTime>? date,
-    Expression<int>? startTime,
-    Expression<int>? endTime,
+    Expression<DateTime>? startTime,
+    Expression<DateTime>? endTime,
     Expression<String>? content,
   }) {
     return RawValuesInsertable({
@@ -389,8 +389,8 @@ class SchedulesCompanion extends UpdateCompanion<Schedule> {
     Value<String>? title,
     Value<String>? category,
     Value<DateTime>? date,
-    Value<int>? startTime,
-    Value<int>? endTime,
+    Value<DateTime>? startTime,
+    Value<DateTime>? endTime,
     Value<String>? content,
   }) {
     return SchedulesCompanion(
@@ -420,10 +420,10 @@ class SchedulesCompanion extends UpdateCompanion<Schedule> {
       map['date'] = Variable<DateTime>(date.value);
     }
     if (startTime.present) {
-      map['start_time'] = Variable<int>(startTime.value);
+      map['start_time'] = Variable<DateTime>(startTime.value);
     }
     if (endTime.present) {
-      map['end_time'] = Variable<int>(endTime.value);
+      map['end_time'] = Variable<DateTime>(endTime.value);
     }
     if (content.present) {
       map['content'] = Variable<String>(content.value);
@@ -755,8 +755,8 @@ typedef $$SchedulesTableCreateCompanionBuilder =
       required String title,
       required String category,
       required DateTime date,
-      required int startTime,
-      required int endTime,
+      required DateTime startTime,
+      required DateTime endTime,
       required String content,
     });
 typedef $$SchedulesTableUpdateCompanionBuilder =
@@ -765,8 +765,8 @@ typedef $$SchedulesTableUpdateCompanionBuilder =
       Value<String> title,
       Value<String> category,
       Value<DateTime> date,
-      Value<int> startTime,
-      Value<int> endTime,
+      Value<DateTime> startTime,
+      Value<DateTime> endTime,
       Value<String> content,
     });
 
@@ -799,12 +799,12 @@ class $$SchedulesTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<int> get startTime => $composableBuilder(
+  ColumnFilters<DateTime> get startTime => $composableBuilder(
     column: $table.startTime,
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<int> get endTime => $composableBuilder(
+  ColumnFilters<DateTime> get endTime => $composableBuilder(
     column: $table.endTime,
     builder: (column) => ColumnFilters(column),
   );
@@ -844,12 +844,12 @@ class $$SchedulesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<int> get startTime => $composableBuilder(
+  ColumnOrderings<DateTime> get startTime => $composableBuilder(
     column: $table.startTime,
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<int> get endTime => $composableBuilder(
+  ColumnOrderings<DateTime> get endTime => $composableBuilder(
     column: $table.endTime,
     builder: (column) => ColumnOrderings(column),
   );
@@ -881,10 +881,10 @@ class $$SchedulesTableAnnotationComposer
   GeneratedColumn<DateTime> get date =>
       $composableBuilder(column: $table.date, builder: (column) => column);
 
-  GeneratedColumn<int> get startTime =>
+  GeneratedColumn<DateTime> get startTime =>
       $composableBuilder(column: $table.startTime, builder: (column) => column);
 
-  GeneratedColumn<int> get endTime =>
+  GeneratedColumn<DateTime> get endTime =>
       $composableBuilder(column: $table.endTime, builder: (column) => column);
 
   GeneratedColumn<String> get content =>
@@ -926,8 +926,8 @@ class $$SchedulesTableTableManager
                 Value<String> title = const Value.absent(),
                 Value<String> category = const Value.absent(),
                 Value<DateTime> date = const Value.absent(),
-                Value<int> startTime = const Value.absent(),
-                Value<int> endTime = const Value.absent(),
+                Value<DateTime> startTime = const Value.absent(),
+                Value<DateTime> endTime = const Value.absent(),
                 Value<String> content = const Value.absent(),
               }) => SchedulesCompanion(
                 id: id,
@@ -944,8 +944,8 @@ class $$SchedulesTableTableManager
                 required String title,
                 required String category,
                 required DateTime date,
-                required int startTime,
-                required int endTime,
+                required DateTime startTime,
+                required DateTime endTime,
                 required String content,
               }) => SchedulesCompanion.insert(
                 id: id,

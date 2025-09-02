@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:intl/intl.dart';
 import 'package:saegim/common/service/memo_service.dart';
 import 'package:saegim/common/widgets/board_header.dart';
+import 'package:saegim/common/widgets/custom_alert_dialog.dart';
+import 'package:saegim/database/saegim_database.dart';
 import 'package:saegim/memo/board_memo.dart';
 import 'package:saegim/utils/routes.dart';
 
@@ -24,36 +25,61 @@ class _MemoWriteState extends State<MemoWrite> {
   String title = '';
   String content = '';
 
-  // String으로 콜백받은 데이터를 DateTime으로 변환하는 함수
-  DateTime? parseDateTime(String? dateTimeString) {
-    if(dateTimeString == null || dateTimeString.isEmpty){
-      return null;
-    }
-
-    try {
-      return DateFormat('yyyy년 MM월 dd일').parse(dateTimeString);
-    } catch(e) {
-      print('날짜/시간 파싱 오류: $e');
-      return null;
-    }
-  }
+  // 메모 테이블 저장 변수
+  Memo? _memo;
 
   // 저장
   Future<void> saveForm() async {
-    if(formKey.currentState!.validate()){
+    // 1. 모든 TextFormField의 validator를 실행. 실패하면 여기서 중단.
+    if (formKey.currentState!.validate()) {
+      // 2. validator를 모두 통과하면 onSaved 콜백을 실행하여 변수에 값을 할당
       formKey.currentState!.save();
 
-      await memoBoardService.saveForm(
-        context,
-        null,
-        formKey,
-        title,
-        content,
-      );
-    }
+      // 3. 모든 유효성 검사 통과 후 서비스 호출
+      try {
+        final id = _memo?.id;
 
-    if(mounted){
-      Navigator.of(context).pushNamed(memoRoute);
+        await memoBoardService.saveMemo(
+          id: id,
+          title: title,
+          content: content
+        );
+
+        // 4. 저장 성공 알림
+        if (mounted) {
+          await showDialog(
+            context: context,
+            builder: (context) {
+              return CustomAlertDialog(
+                title: '알림',
+                content: '메모가 성공적으로 저장되었습니다.',
+                onConfirm: () { Navigator.of(context).pop(); },
+                onCancel: null,
+              );
+            },
+          );
+        }
+
+        // 5. 알림 후 페이지 이동
+        if (mounted) {
+          Navigator.of(context).pushNamed(memoRoute);
+        }
+      } catch(e) {
+        // 6. 저장 실패 알림
+        if (mounted) {
+          await showDialog(
+            context: context,
+            builder: (context) {
+              return CustomAlertDialog(
+                title: '오류',
+                content: '메모 저장 중 오류가 발생했습니다: $e',
+                onConfirm: () { Navigator.of(context).pop(); },
+                onCancel: null,
+              );
+            },
+          );
+        }
+      }
     }
   }
 

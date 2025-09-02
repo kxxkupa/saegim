@@ -27,7 +27,7 @@ void setupGetIt() {
   final database = LocalDatabase();
   getIt.registerSingleton<LocalDatabase>(database);
 
-  // 2. 각 서비스에 LocalDatabase 인스턴스를 전달하며 등록
+  // 각 서비스에 LocalDatabase 인스턴스를 전달하며 등록
   getIt.registerSingleton<ScheduleService>(ScheduleService());
   getIt.registerSingleton<MemoService>(MemoService());
 }
@@ -60,6 +60,18 @@ class Main extends StatelessWidget {
       locale: const Locale('ko', 'KR'),
       theme: ThemeData(
         scaffoldBackgroundColor: backgroundColor,
+        colorScheme: const ColorScheme.light(
+          primary: primaryColor,
+          surface: listBackground,
+        ),
+        dialogTheme: DialogThemeData(
+          backgroundColor: backgroundColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadiusGeometry.circular(8.0),
+          ),
+          titleTextStyle: textSize20,
+          contentTextStyle: textSize14.copyWith(fontWeight: FontWeight.w500),
+        ),
       ),
       initialRoute: homeRoute,
       onGenerateRoute: (settings) {

@@ -3,7 +3,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:saegim/common/const/public_style.dart';
-import 'package:saegim/common/widgets/tab_list.dart';
 import 'package:saegim/common/widgets/tab_list_memo.dart';
 import 'package:saegim/common/widgets/tab_list_schedule.dart';
 
@@ -12,10 +11,10 @@ class HomeTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> tabTitles = ['일정', '메모', '디데이'];
+    final List<String> tabTitles = ['일정', '메모'];
 
     return DefaultTabController(
-      length: 3,
+      length: tabTitles.length,
       child: Column(
         children: [
           TabBar(
@@ -55,9 +54,6 @@ class HomeTab extends StatelessWidget {
       
                 // 메모
                 TabListMemo(titleName: '메모'),
-      
-                // 디데이
-                TabList(titleName: '디데이', itemLength: 3,),
               ],
             ),
           ),

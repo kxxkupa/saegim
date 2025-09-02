@@ -33,6 +33,10 @@ class _BoardScheduleState extends State<BoardSchedule> {
   late TextEditingController startTimeController;
   late TextEditingController endTimeController;
   late TextEditingController contentController;
+
+  // onSaved 콜백이 값을 저장할 변수들
+  DateTime? startTime;
+  DateTime? endTime;
   
   @override
   void initState() {
@@ -43,12 +47,12 @@ class _BoardScheduleState extends State<BoardSchedule> {
     startTimeController = TextEditingController(
       text: widget.schedule?.startTime != null
         ? DateFormat('yyyy년 MM월 dd일 HH시 mm분')
-            .format(DateTime.fromMillisecondsSinceEpoch(widget.schedule!.startTime))
+            .format(widget.schedule!.startTime)
         : null);
     endTimeController = TextEditingController(
       text: widget.schedule?.endTime != null
         ? DateFormat('yyyy년 MM월 dd일 HH시 mm분')
-            .format(DateTime.fromMillisecondsSinceEpoch(widget.schedule!.endTime))
+            .format(widget.schedule!.endTime)
         : null);
     contentController = TextEditingController(text: widget.schedule?.content);
   }
@@ -77,19 +81,57 @@ class _BoardScheduleState extends State<BoardSchedule> {
       child: Column(
         children: [
           // 제목
-          CustomTextField(schedule: widget.schedule, controller: titleController, label: '제목', isTime: false, onSaved: widget.onTitleSaved!, validator: contentValidator,),
+          CustomTextField(
+            schedule: widget.schedule,
+            controller: titleController,
+            label: '제목',
+            isTime: false,
+            onSaved: widget.onTitleSaved != null ? (val) => widget.onTitleSaved!(val) : null,
+            validator: contentValidator,
+          ),
           SizedBox(height: 4.0,),
       
           // 분류
-          CustomTextField(schedule: widget.schedule, controller: categoryController, label: '분류', isTime: false, onSaved: widget.onCategorySaved!, validator: contentValidator,),
+          CustomTextField(
+            schedule: widget.schedule,
+            controller: categoryController,
+            label: '분류',
+            isTime: false,
+            onSaved: widget.onCategorySaved != null ? (val) => widget.onCategorySaved!(val) : null,
+            validator: contentValidator,
+          ),
           SizedBox(height: 4.0,),      
 
           // 시작 시간
-          CustomTextField(schedule: widget.schedule, controller: startTimeController, label: '시작', isTime: true, onSaved: widget.onStartTimeSaved!, validator: contentValidator,),
+          CustomTextField(
+            schedule: widget.schedule,
+            controller: startTimeController,
+            label: '시작',
+            isTime: true,
+            onSaved: (val) {
+              if (widget.onStartTimeSaved != null) {
+                widget.onStartTimeSaved!(val);
+              }
+              startTime = parseDateTime(val);
+            },
+            validator: (val) => validateTime(val, '시작 시간'),
+          ),
           SizedBox(height: 4.0,),
 
           // 끝 시간
-          CustomTextField(schedule: widget.schedule, controller: endTimeController, label: '끝', isTime: true, onSaved: widget.onEndTimeSaved!, validator: contentValidator,),
+          CustomTextField(
+            schedule: widget.schedule,
+            controller: endTimeController,
+            label: '끝',
+            isTime: true,
+            onSaved: (val) {
+              if (widget.onEndTimeSaved != null) {
+                widget.onEndTimeSaved!(val);
+              }
+              endTime = parseDateTime(val);
+            },
+            validator: (val) => validateTime(val, '끝 시간'),
+          ),
           SizedBox(height: 10.0,),
 
           // 내용
@@ -119,10 +161,33 @@ class _BoardScheduleState extends State<BoardSchedule> {
     );
   }
 
+  // String으로 콜백받은 데이터를 DateTime으로 변환하는 함수
+  DateTime? parseDateTime(String? dateTimeString) {
+    if(dateTimeString == null || dateTimeString.isEmpty){
+      return null;
+    }
+
+    try {
+      return DateFormat('yyyy년 MM월 dd일 HH시 mm분').parse(dateTimeString);
+    } catch(e) {
+      print('날짜/시간 파싱 오류: $e');
+      return null;
+    }
+  }
+
   // 내용 검증 함수
   String? contentValidator(String? val) {
     if(val == null || val.isEmpty){
       return '내용을 입력해주세요';
+    }
+
+    return null;
+  }
+
+  // 시작 시간, 끝 시간 유효성 검사
+  String? validateTime(String? val, String label) {
+    if (val == null || val.isEmpty) {
+      return '$label을 입력해주세요';
     }
 
     return null;

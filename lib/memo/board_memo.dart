@@ -54,7 +54,14 @@ class _BoardMemoState extends State<BoardMemo> {
       child: Column(
         children: [
           // 제목
-          CustomTextField(memo: widget.memo, controller: titleController, label: '제목', isTime: false, onSaved: widget.onTitleSaved!, validator: contentValidator,),
+          CustomTextField(
+            memo: widget.memo,
+            controller: titleController,
+            label: '제목',
+            isTime: false,
+            onSaved: widget.onTitleSaved!,
+            validator: contentValidator,
+          ),
           SizedBox(height: 10.0,),
 
           // 내용

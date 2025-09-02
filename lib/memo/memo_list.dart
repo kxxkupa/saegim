@@ -5,7 +5,7 @@ import 'package:saegim/database/saegim_database.dart';
 import 'package:saegim/utils/routes.dart';
 
 class MemoList extends StatelessWidget {
-  final Schedule memo;
+  final Memo memo;
 
   const MemoList({
     super.key,
@@ -16,7 +16,7 @@ class MemoList extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).pushNamed(calendarViewRoute, arguments: memo);
+        Navigator.of(context).pushNamed(memoViewRoute, arguments: memo);
       },
       child: Container(
         decoration: BoxDecoration(

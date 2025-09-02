@@ -55,9 +55,9 @@ class TabListSchedule extends StatelessWidget {
           itemCount: dataLength,
           itemBuilder: (context, index) {
             final schedule = snapshot.data![index];
-            final DateTime startTime = DateTime.fromMillisecondsSinceEpoch(schedule.startTime);
+            final DateTime startTime = schedule.startTime;
             final String startTimeFormatted = DateFormat('HH:mm').format(startTime);
-            final DateTime endTime = DateTime.fromMillisecondsSinceEpoch(schedule.endTime);
+            final DateTime endTime = schedule.endTime;
             final String endTimeFormatted = DateFormat('HH:mm').format(endTime);
 
             return Padding(

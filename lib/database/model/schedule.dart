@@ -5,7 +5,7 @@ class Schedules extends Table {
   TextColumn get title => text()();                 // 제목, 글자 열
   TextColumn get category => text()();              // 분류, 글자 열
   DateTimeColumn get date => dateTime()();          // 일정 날짜, 날짜 열
-  IntColumn get startTime => integer()();           // 시작 시간
-  IntColumn get endTime => integer()();             // 종료 시간
+  DateTimeColumn get startTime => dateTime()();     // 시작 시간, 날짜 열
+  DateTimeColumn get endTime => dateTime()();       // 종료 시간, 날짜 열
   TextColumn get content => text()();               // 내용, 글자 열
 }

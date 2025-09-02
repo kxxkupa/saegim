@@ -48,7 +48,7 @@ class LocalDatabase extends _$LocalDatabase {
     },
   );
 
-  /* 일정 */
+  /* ----- 일정 ----- */
   // 데이터를 조회하고 변화 감지 (SELECT)
   Stream<List<Schedule>> watchSchedules(DateTime date) {
     // 선택된 날짜의 시작 시간
@@ -66,7 +66,7 @@ class LocalDatabase extends _$LocalDatabase {
   // 일정 삭제
   Future<int> removeSchedule(int id) => (delete(schedules)..where((tbl) => tbl.id.equals(id))).go();
 
-  /* 메모 */
+  /* ------ 메모 ----- */
   Stream<List<Memo>> watchMemos() {
     return (select(memos)..orderBy([(tbl) => OrderingTerm.desc(tbl.date), (tbl) => OrderingTerm.desc(tbl.id)])).watch();
   }
