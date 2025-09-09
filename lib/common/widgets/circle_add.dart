@@ -1,3 +1,8 @@
+// 프로젝트 명 : 새김
+// 파일명 : circle_add.dart
+// 파일 경로 : /lib/common/widgets/
+// 분류 : 게시판 글쓰기 이동 버튼
+
 import 'package:flutter/material.dart';
 import 'package:saegim/common/const/icon.dart';
 
@@ -13,7 +18,7 @@ class CircleAdd extends StatelessWidget {
   Widget build(BuildContext context) {
     return Positioned(
       bottom: 20.0,
-      right: 0,
+      right: 28.0,
       child: GestureDetector(
         onTap: () {
           Navigator.of(context).pushNamed(movePageRoute);

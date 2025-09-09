@@ -1,3 +1,8 @@
+// 프로젝트 명 : 새김
+// 파일명 : board_header.dart
+// 파일 경로 : /lib/common/widgets/
+// 분류 : 게시판 공통 헤더
+
 import 'package:flutter/material.dart';
 import 'package:saegim/common/const/icon.dart';
 
@@ -23,86 +28,49 @@ class BoardHeader extends StatelessWidget {
         // 닫기
         GestureDetector(
           onTap: () {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-              exit,
-              (Route<dynamic> route) => false,
-            );
+            Navigator.of(context).pushNamedAndRemoveUntil(exit, (Route<dynamic> route) => false);
           },
-          child: Image.asset(
-            ImageConstants.iconClose,
-            width: 40.0,
-            height: 40.0,
-          ),
+          child: _buildImage(ImageConstants.iconClose),
         ),
 
         // 삭제, 저장
-        isWrite ? _Write(onSave: onSave,) : _View(onSave: onSave, onDelete: onDelete,)
+        _buildBoardButtons(),
       ],
     );
   }
-}
 
-// 저장
-class _Write extends StatelessWidget {
-  final VoidCallback onSave;
-
-  const _Write({
-    super.key,
-    required this.onSave,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        GestureDetector(
-          onTap: onSave,
-          child: Image.asset(
-            ImageConstants.iconSave,
-            width: 40.0,
-            height: 40.0,
-          ),
-        ),
-      ],
+  // 아이콘 공통
+  Widget _buildImage(String iconPath) {
+    return Image.asset(
+      iconPath,
+      width: 40.0,
+      height: 40.0,
     );
   }
-}
 
-class _View extends StatelessWidget {
-  final VoidCallback onSave;
-  final VoidCallback? onDelete;
+  // 게시판 버튼 공통
+  Widget _buildBoardButton(VoidCallback onTap, String iconPath) {
+    return GestureDetector(
+      onTap: onTap,
+      child: _buildImage(iconPath),
+    );
+  }
 
-  const _View({
-    super.key,
-    required this.onSave,
-    required this.onDelete,
-  });
-
-  @override
-  Widget build(BuildContext context) {
+  // 저장 및 삭제
+  Widget _buildBoardButtons() {
     return Row(
       children: [
-        // 삭제
-        GestureDetector(
-          onTap: onDelete,
-          child: Image.asset(
-            ImageConstants.iconDelete,
-            width: 40.0,
-            height: 40.0,
+        if (!isWrite)
+          Row(
+            children: [
+              // 삭제
+              _buildBoardButton(onDelete!, ImageConstants.iconDelete),
+              const SizedBox(width: 12.0,),
+            ]
           ),
-        ),
-
-        SizedBox(width: 12.0,),
 
         // 저장
-        GestureDetector(
-          onTap: onSave,
-          child: Image.asset(
-            ImageConstants.iconSave,
-            width: 40.0,
-            height: 40.0,
-          ),
-        ),
+        _buildBoardButton(onSave, ImageConstants.iconSave)
       ],
     );
   }

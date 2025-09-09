@@ -1,4 +1,10 @@
+// 프로젝트 명 : 새김
+// 파일명 : today_banner.dart
+// 파일 경로 : /lib/calendar/
+// 분류 : 선택 날짜 배너
+
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:saegim/common/const/public_style.dart';
 
 class TodayBanner extends StatelessWidget {
@@ -13,28 +19,8 @@ class TodayBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final int weekday = selectedDate.weekday;
-    
-    String getWeekdayString(int day) {
-      switch (day) {
-        case 1:
-          return '월요일';
-        case 2:
-          return '화요일';
-        case 3:
-          return '수요일';
-        case 4:
-          return '목요일';
-        case 5:
-          return '금요일';
-        case 6:
-          return '토요일';
-        case 7:
-          return '일요일';
-        default:
-          return '알 수 없음';
-      }
-    }
+    // 날짜와 요일을 한 번에 포맷팅
+    final formattedDate = DateFormat('yyyy년 M월 d일 EEEE', 'ko_KR').format(selectedDate);
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 33.0),
@@ -42,20 +28,18 @@ class TodayBanner extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            '${selectedDate.year}년 ${selectedDate.month}월 ${selectedDate.day}일 ${getWeekdayString(weekday)}',
+            formattedDate,
             style: textSize18,
           ),
           Container(
             padding: const EdgeInsets.all(10.0),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               shape: BoxShape.circle,
               color: primaryColor,
             ),
-            child: Center(
-              child: Text(
-                '$count',
-                style: textSize14.copyWith(color: backgroundColor,),
-              ),
+            child: Text(
+              '$count',
+              style: textSize14.copyWith(color: backgroundColor,),
             ),
           )
         ],

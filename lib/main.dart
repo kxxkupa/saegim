@@ -11,9 +11,9 @@ import 'package:saegim/common/widgets/bottom_navigation.dart';
 import 'package:saegim/common/screen/home_screen.dart';
 import 'package:saegim/memo/memo_view.dart';
 import 'package:saegim/utils/routes.dart';
-import 'package:saegim/calendar/calendar_screen.dart';
-import 'package:saegim/calendar/calendar_view.dart';
-import 'package:saegim/calendar/calendar_write.dart';
+import 'package:saegim/calendar/schedule_screen.dart';
+import 'package:saegim/calendar/schedule_view.dart';
+import 'package:saegim/calendar/schedule_write.dart';
 import 'package:saegim/memo/memo_screen.dart';
 import 'package:saegim/memo/memo_write.dart';
 
@@ -82,14 +82,14 @@ class Main extends StatelessWidget {
           case homeRoute:
             page = const HomeScreen();
             break;
-          case calendarRoute:
-            page = const CalendarScreen();
+          case scheduleRoute:
+            page = const ScheduleScreen();
             break;
-          case calendarWriteRoute:
-            page = const CalendarWrite();
+          case scheduleWriteRoute:
+            page = const ScheduleWrite();
             break;
-          case calendarViewRoute:
-            page = const CalendarView();
+          case scheduleViewRoute:
+            page = const ScheduleView();
             break;
           case memoRoute:
             page = const MemoScreen();

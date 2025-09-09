@@ -1,7 +1,10 @@
 // 프로젝트 명 : 새김
+// 파일명 : home_screen.dart
+// 파일 경로 : /lib/common/screen/
 // 분류 : 시작 화면
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:saegim/common/const/icon.dart';
 import 'package:saegim/common/const/public_style.dart';
 import 'package:saegim/common/widgets/home_tab.dart';
@@ -13,28 +16,6 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final DateTime today = DateTime.now();
-    final int weekday = today.weekday;
-    
-    String getWeekdayString(int day) {
-      switch (day) {
-        case 1:
-          return '월요일';
-        case 2:
-          return '화요일';
-        case 3:
-          return '수요일';
-        case 4:
-          return '목요일';
-        case 5:
-          return '금요일';
-        case 6:
-          return '토요일';
-        case 7:
-          return '일요일';
-        default:
-          return '알 수 없음';
-      }
-    }
 
     return Scaffold(
       body: SafeArea(
@@ -46,11 +27,11 @@ class HomeScreen extends StatelessWidget {
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  '${today.year}년 ${today.month}월 ${today.day}일 ${getWeekdayString(weekday)}',
+                  DateFormat('yyyy년 M월 d일 EEEE', 'ko_KR').format(today),
                   style: textSize20.copyWith(fontWeight: FontWeight.w700),
                 ),
               ),
-              SizedBox(height: 32.0,),
+              const SizedBox(height: 32.0,),
               // 메뉴 버튼
               SizedBox(
                 height: 57.0,
@@ -60,89 +41,74 @@ class HomeScreen extends StatelessWidget {
                   children: [
                     // 일정
                     Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).pushNamed(calendarRoute);
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: primaryColor,
-                            boxShadow: [
-                              BoxShadow(
-                                offset: const Offset(0, 1),
-                                blurRadius: 5.0,
-                                color: Color(0xFF000000).withValues(alpha: 0.15),
-                              ),
-                            ],
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                ImageConstants.mainMenuCalendar,
-                                width: 21.0,
-                                height: 21.0,
-                              ),
-                              SizedBox(width: 8.0,),
-                              Text(
-                                '일정',
-                                style: textSize18.copyWith(color: backgroundColor),
-                              ),
-                            ],
-                          ),
-                        )
-                      ),
+                      child: _MainMenuButton(text: '일정', iconPath: ImageConstants.mainMenuCalendar, onTap: () { Navigator.of(context).pushNamed(scheduleRoute); }),
                     ),
-                    SizedBox(width: 16.0,),
+                    const SizedBox(width: 16.0,),
+
                     // 메모
                     Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).pushNamed(memoRoute);
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: primaryColor,
-                            boxShadow: [
-                              BoxShadow(
-                                offset: const Offset(0, 1),
-                                blurRadius: 5.0,
-                                color: Color(0xFF000000).withValues(alpha: 0.15),
-                              ),
-                            ],
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                ImageConstants.mainMenuMemo,
-                                width: 21.0,
-                                height: 21.0,
-                              ),
-                              SizedBox(width: 8.0,),
-                              Text(
-                                '메모',
-                                style: textSize18.copyWith(color: backgroundColor),
-                              )
-                            ],
-                          ),
-                        )
-                      ),
+                      child: _MainMenuButton(text: '메모', iconPath: ImageConstants.mainMenuMemo, onTap: () { Navigator.of(context).pushNamed(memoRoute); }),
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: 40.0,),
+              const SizedBox(height: 40.0,),
+
               // 탭 메뉴
-              Expanded(
+              const Expanded(
                 child: HomeTab(),
               )
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+// 재사용 가능한 메인 메뉴 버튼 위젯
+class _MainMenuButton extends StatelessWidget {
+  final String text;
+  final String iconPath;
+  final VoidCallback onTap;
+
+  const _MainMenuButton({
+    required this.text,
+    required this.iconPath,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          color: primaryColor,
+          boxShadow: [
+            BoxShadow(
+              offset: const Offset(0, 1),
+              blurRadius: 5.0,
+              color: Colors.black.withValues(alpha: 0.15),
+            ),
+          ],
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset(
+              iconPath,
+              width: 21.0,
+              height: 21.0,
+            ),
+            const SizedBox(width: 8.0),
+            Text(
+              text,
+              style: textSize18.copyWith(color: backgroundColor),
+            ),
+          ],
         ),
       ),
     );

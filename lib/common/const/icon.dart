@@ -1,4 +1,6 @@
 // 프로젝트 명 : 새김
+// 파일명 : icon.dart
+// 파일 경로 : /lib/common/const/
 // 분류 : 공통 아이콘
 
 class ImageConstants {

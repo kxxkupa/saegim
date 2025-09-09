@@ -1,4 +1,6 @@
 // 프로젝트 명 : 새김
+// 파일명 : public_style.dart
+// 파일 경로 : /lib/common/const/
 // 분류 : 공통 스타일
 
 import 'package:flutter/material.dart';

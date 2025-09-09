@@ -1,7 +1,7 @@
 const String homeRoute = "/";
-const String calendarRoute = "/calendar";
-const String calendarWriteRoute = "/calendarWrite";
-const String calendarViewRoute = "/calendarView";
+const String scheduleRoute = "/schedule";
+const String scheduleWriteRoute = "/schedule/scheduleWrite";
+const String scheduleViewRoute = "/schedule/scheduleView";
 const String memoRoute = "/memo";
-const String memoWriteRoute = "/memoWrite";
-const String memoViewRoute = "/memoView";
+const String memoWriteRoute = "/memo/memoWrite";
+const String memoViewRoute = "/memo/memoView";

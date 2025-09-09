@@ -1,3 +1,8 @@
+// 프로젝트 명 : 새김
+// 파일명 : board_schedule.dart
+// 파일 경로 : /lib/calendar/
+// 분류 : 일정 작성 폼
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:saegim/common/const/public_style.dart';
@@ -33,10 +38,6 @@ class _BoardScheduleState extends State<BoardSchedule> {
   late TextEditingController startTimeController;
   late TextEditingController endTimeController;
   late TextEditingController contentController;
-
-  // onSaved 콜백이 값을 저장할 변수들
-  DateTime? startTime;
-  DateTime? endTime;
   
   @override
   void initState() {
@@ -63,6 +64,7 @@ class _BoardScheduleState extends State<BoardSchedule> {
     categoryController.dispose();
     startTimeController.dispose();
     endTimeController.dispose();
+    contentController.dispose();
 
     super.dispose();
   }
@@ -70,7 +72,7 @@ class _BoardScheduleState extends State<BoardSchedule> {
   @override
   Widget build(BuildContext context) {
     final InputBorder myInputBorder = OutlineInputBorder(
-      borderSide: BorderSide(
+      borderSide: const BorderSide(
         color: primaryColor,
         width: 1.0,
       ),
@@ -82,64 +84,50 @@ class _BoardScheduleState extends State<BoardSchedule> {
         children: [
           // 제목
           CustomTextField(
-            schedule: widget.schedule,
             controller: titleController,
             label: '제목',
             isTime: false,
-            onSaved: widget.onTitleSaved != null ? (val) => widget.onTitleSaved!(val) : null,
+            onSaved: widget.onTitleSaved,
             validator: contentValidator,
           ),
-          SizedBox(height: 4.0,),
+          const SizedBox(height: 4.0,),
       
           // 분류
           CustomTextField(
-            schedule: widget.schedule,
             controller: categoryController,
             label: '분류',
             isTime: false,
-            onSaved: widget.onCategorySaved != null ? (val) => widget.onCategorySaved!(val) : null,
+            onSaved: widget.onCategorySaved,
             validator: contentValidator,
           ),
-          SizedBox(height: 4.0,),      
+          const SizedBox(height: 4.0,),      
 
           // 시작 시간
           CustomTextField(
-            schedule: widget.schedule,
             controller: startTimeController,
             label: '시작',
             isTime: true,
-            onSaved: (val) {
-              if (widget.onStartTimeSaved != null) {
-                widget.onStartTimeSaved!(val);
-              }
-              startTime = parseDateTime(val);
-            },
+            onSaved: widget.onStartTimeSaved,
             validator: (val) => validateTime(val, '시작 시간'),
           ),
-          SizedBox(height: 4.0,),
+          const SizedBox(height: 4.0,),
 
           // 끝 시간
           CustomTextField(
-            schedule: widget.schedule,
             controller: endTimeController,
             label: '끝',
             isTime: true,
-            onSaved: (val) {
-              if (widget.onEndTimeSaved != null) {
-                widget.onEndTimeSaved!(val);
-              }
-              endTime = parseDateTime(val);
-            },
+            onSaved: widget.onEndTimeSaved,
             validator: (val) => validateTime(val, '끝 시간'),
           ),
-          SizedBox(height: 10.0,),
+          const SizedBox(height: 10.0,),
 
           // 내용
           Expanded(
             child: TextFormField(
+              controller: contentController,
               onSaved: widget.onContentSaved,
               validator: contentValidator,
-              controller: contentController,
               maxLines: null,
               expands: true,
               cursorColor: primaryColor,
@@ -151,7 +139,7 @@ class _BoardScheduleState extends State<BoardSchedule> {
                 enabledBorder: myInputBorder,
                 focusedBorder: myInputBorder,
                 hintText: '내용을 입력하세요',
-                hintStyle: textSize16.copyWith(color: primaryColor.withValues(alpha: .5), fontWeight: FontWeight.w500)
+                hintStyle: textSize16.copyWith(color: primaryColor.withValues(alpha: 0.5), fontWeight: FontWeight.w500)
               ),
               style: textSize16.copyWith(fontWeight: FontWeight.w500),
             ),
@@ -160,36 +148,22 @@ class _BoardScheduleState extends State<BoardSchedule> {
       ),
     );
   }
+}
 
-  // String으로 콜백받은 데이터를 DateTime으로 변환하는 함수
-  DateTime? parseDateTime(String? dateTimeString) {
-    if(dateTimeString == null || dateTimeString.isEmpty){
-      return null;
-    }
-
-    try {
-      return DateFormat('yyyy년 MM월 dd일 HH시 mm분').parse(dateTimeString);
-    } catch(e) {
-      print('날짜/시간 파싱 오류: $e');
-      return null;
-    }
+// 내용 검증 함수
+String? contentValidator(String? val) {
+  if(val == null || val.isEmpty){
+    return '내용을 입력해주세요';
   }
 
-  // 내용 검증 함수
-  String? contentValidator(String? val) {
-    if(val == null || val.isEmpty){
-      return '내용을 입력해주세요';
-    }
+  return null;
+}
 
-    return null;
+// 시작 시간, 끝 시간 유효성 검사
+String? validateTime(String? val, String label) {
+  if (val == null || val.isEmpty) {
+    return '$label을 입력해주세요';
   }
 
-  // 시작 시간, 끝 시간 유효성 검사
-  String? validateTime(String? val, String label) {
-    if (val == null || val.isEmpty) {
-      return '$label을 입력해주세요';
-    }
-
-    return null;
-  }
+  return null;
 }

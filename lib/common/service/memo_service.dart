@@ -1,8 +1,12 @@
+// 프로젝트 명 : 새김
+// 파일명 : memo_service.dart
+// 파일 경로 : /lib/common/service/
+// 분류 : 메모 서비스
+
 import 'package:drift/drift.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:saegim/database/saegim_database.dart';
-import 'package:flutter/material.dart';
 
 class MemoService {
   final db = GetIt.I<LocalDatabase>();

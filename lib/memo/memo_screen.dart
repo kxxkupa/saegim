@@ -1,3 +1,8 @@
+// 프로젝트 명 : 새김
+// 파일명 : memo_screen.dart
+// 파일 경로 : /lib/memo/
+// 분류 : 메모 페이지
+
 import 'package:flutter/material.dart';
 import 'package:saegim/common/widgets/header.dart';
 import 'package:saegim/memo/main_memo.dart';

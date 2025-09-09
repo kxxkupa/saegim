@@ -1,3 +1,8 @@
+// 프로젝트 명 : 새김
+// 파일명 : schedule_service.dart
+// 파일 경로 : /lib/common/service/
+// 분류 : 일정 서비스
+
 import 'package:drift/drift.dart';
 import 'package:get_it/get_it.dart';
 import 'package:saegim/database/saegim_database.dart';
@@ -8,8 +13,19 @@ class ScheduleService {
   ScheduleService();
 
   // 모든 일정 가져오기
-  Stream<List<Schedule>> watchAllSchedules() {
-    return (db.select(db.schedules)..orderBy([(tbl) => OrderingTerm.desc(tbl.date)])).watch();
+  Stream<List<Schedule>> watchSchedules(DateTime date) {
+    // 선택된 날짜의 '시작'과 '끝' 시간을 정의합니다.
+    final selectedStartOfDay = DateTime(date.year, date.month, date.day);
+    final selectedEndOfDay = DateTime(date.year, date.month, date.day, 23, 59, 59);
+
+    return (db.select(db.schedules)
+      ..where((tbl) => Expression.and([
+          tbl.startTime.isSmallerOrEqualValue(selectedEndOfDay),
+          tbl.endTime.isBiggerOrEqualValue(selectedStartOfDay),
+        ])
+      )
+      ..orderBy([(tbl) => OrderingTerm.desc(tbl.startTime)]))
+    .watch();
   }
 
   // 일정 저장 (INSERT 또는 UPDATE)

@@ -1,3 +1,8 @@
+// 프로젝트 명 : 새김
+// 파일명 : board_memo.dart
+// 파일 경로 : /lib/memo/
+// 분류 : 메모 작성 폼
+
 import 'package:flutter/material.dart';
 import 'package:saegim/common/const/public_style.dart';
 import 'package:saegim/common/widgets/custom_text_field.dart';
@@ -21,8 +26,8 @@ class BoardMemo extends StatefulWidget {
 
 class _BoardMemoState extends State<BoardMemo> {
   // TextFormField를 제어할 컨트롤러 선언
-  late TextEditingController titleController;
-  late TextEditingController contentController;
+  late final TextEditingController titleController;
+  late final TextEditingController contentController;
   
   @override
   void initState() {
@@ -43,7 +48,7 @@ class _BoardMemoState extends State<BoardMemo> {
   @override
   Widget build(BuildContext context) {
     final InputBorder myInputBorder = OutlineInputBorder(
-      borderSide: BorderSide(
+      borderSide: const BorderSide(
         color: primaryColor,
         width: 1.0,
       ),
@@ -55,14 +60,13 @@ class _BoardMemoState extends State<BoardMemo> {
         children: [
           // 제목
           CustomTextField(
-            memo: widget.memo,
             controller: titleController,
             label: '제목',
             isTime: false,
-            onSaved: widget.onTitleSaved!,
+            onSaved: widget.onTitleSaved,
             validator: contentValidator,
           ),
-          SizedBox(height: 10.0,),
+          const SizedBox(height: 10.0,),
 
           // 내용
           Expanded(
@@ -90,13 +94,12 @@ class _BoardMemoState extends State<BoardMemo> {
       ),
     );
   }
-
-  // 내용 검증 함수
-  String? contentValidator(String? val) {
-    if(val == null || val.isEmpty){
-      return '내용을 입력해주세요';
-    }
-
-    return null;
+}
+// 내용 검증 함수
+String? contentValidator(String? val) {
+  if(val == null || val.isEmpty){
+    return '내용을 입력해주세요';
   }
+
+  return null;
 }

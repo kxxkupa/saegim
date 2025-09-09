@@ -1,3 +1,8 @@
+// 프로젝트 명 : 새김
+// 파일명 : header.dart
+// 파일 경로 : /lib/common/widgets/
+// 분류 : 페이지 공통 헤더
+
 import 'package:flutter/material.dart';
 import 'package:saegim/common/const/icon.dart';
 import 'package:saegim/common/const/public_style.dart';

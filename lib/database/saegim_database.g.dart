@@ -742,6 +742,8 @@ abstract class _$LocalDatabase extends GeneratedDatabase {
   $LocalDatabaseManager get managers => $LocalDatabaseManager(this);
   late final $SchedulesTable schedules = $SchedulesTable(this);
   late final $MemosTable memos = $MemosTable(this);
+  late final ScheduleDao scheduleDao = ScheduleDao(this as LocalDatabase);
+  late final MemoDao memoDao = MemoDao(this as LocalDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -1155,4 +1157,11 @@ class $LocalDatabaseManager {
       $$SchedulesTableTableManager(_db, _db.schedules);
   $$MemosTableTableManager get memos =>
       $$MemosTableTableManager(_db, _db.memos);
+}
+
+mixin _$ScheduleDaoMixin on DatabaseAccessor<LocalDatabase> {
+  $SchedulesTable get schedules => attachedDatabase.schedules;
+}
+mixin _$MemoDaoMixin on DatabaseAccessor<LocalDatabase> {
+  $MemosTable get memos => attachedDatabase.memos;
 }

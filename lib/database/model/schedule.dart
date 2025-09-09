@@ -1,3 +1,8 @@
+// 프로젝트 명 : 새김
+// 파일명 : schedule.dart
+// 파일 경로 : /lib/database/model/
+// 분류 : 데이터베이스 테이블 (일정)
+
 import 'package:drift/drift.dart';
 
 class Schedules extends Table {
