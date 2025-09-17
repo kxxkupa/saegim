@@ -10,7 +10,7 @@ import 'package:saegim/common/widgets/custom_text_field.dart';
 import 'package:saegim/database/saegim_database.dart';
 
 class BoardSchedule extends StatefulWidget {
-  final Schedule? schedule;
+  final ScheduleData? schedule;
   final ValueChanged<String?>? onTitleSaved;
   final ValueChanged<String?>? onCategorySaved;
   final ValueChanged<String?>? onStartTimeSaved;
@@ -47,14 +47,12 @@ class _BoardScheduleState extends State<BoardSchedule> {
     categoryController = TextEditingController(text: widget.schedule?.category);
     startTimeController = TextEditingController(
       text: widget.schedule?.startTime != null
-        ? DateFormat('yyyy년 MM월 dd일 HH시 mm분')
-            .format(widget.schedule!.startTime)
-        : null);
+          ? DateFormat('yyyy년 MM월 dd일 HH시 mm분').format(widget.schedule!.startTime)
+          : null);
     endTimeController = TextEditingController(
       text: widget.schedule?.endTime != null
-        ? DateFormat('yyyy년 MM월 dd일 HH시 mm분')
-            .format(widget.schedule!.endTime)
-        : null);
+          ? DateFormat('yyyy년 MM월 dd일 HH시 mm분').format(widget.schedule!.endTime)
+          : null);
     contentController = TextEditingController(text: widget.schedule?.content);
   }
 
@@ -109,6 +107,7 @@ class _BoardScheduleState extends State<BoardSchedule> {
             isTime: true,
             onSaved: widget.onStartTimeSaved,
             validator: (val) => validateTime(val, '시작 시간'),
+            readOnly: true,
           ),
           const SizedBox(height: 4.0,),
 
@@ -119,6 +118,7 @@ class _BoardScheduleState extends State<BoardSchedule> {
             isTime: true,
             onSaved: widget.onEndTimeSaved,
             validator: (val) => validateTime(val, '끝 시간'),
+            readOnly: true,
           ),
           const SizedBox(height: 10.0,),
 

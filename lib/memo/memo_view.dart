@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:get_it/get_it.dart';
 import 'package:saegim/common/service/memo_service.dart';
-import 'package:saegim/common/widgets/board_header.dart';
+import 'package:saegim/common/widgets/board.dart';
 import 'package:saegim/common/widgets/custom_alert_dialog.dart';
 import 'package:saegim/database/saegim_database.dart';
 import 'package:saegim/memo/board_memo.dart';
@@ -26,7 +26,7 @@ class _MemoViewState extends State<MemoView> {
   final memoBoardService = GetIt.I<MemoService>();
 
   // 메모 테이블 저장 변수
-  Memo? _memo;
+  MemoData? _memo;
 
   // onSaved 콜백에서 업데이트될 데이터를 임시로 저장할 맵
   final Map<String, dynamic> _formData = {};
@@ -39,7 +39,7 @@ class _MemoViewState extends State<MemoView> {
     SchedulerBinding.instance.addPostFrameCallback((_) {
       final arguments = ModalRoute.of(context)?.settings.arguments;
 
-      if (arguments != null && arguments is Memo) {
+      if (arguments != null && arguments is MemoData) {
         setState(() {
           _memo = arguments;
           
@@ -61,26 +61,16 @@ class _MemoViewState extends State<MemoView> {
       );
     }
 
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 40.0, horizontal: 36.0),
-        child: Form(
-          key: formKey,
-          child: Column(
-            children: [
-              // 게시판 헤더
-              BoardHeader(exit: memoRoute, isWrite: false, onSave: saveForm, onDelete: removeForm,),
-              const SizedBox(height: 30.0,),
-          
-              // 게시판 본문
-              BoardMemo(
-                memo: _memo,
-                onTitleSaved: (val) => _formData['title'] = val ?? '',
-                onContentSaved: (val) => _formData['content'] = val ?? '',
-              ),
-            ],
-          ),
-        ),
+    return Board(
+      formKey: formKey,
+      exitRoute: memoRoute,
+      isWrite: false,
+      onSave: saveForm,
+      onDelete: removeForm,
+      boardBody: BoardMemo(
+        memo: _memo,
+        onTitleSaved: (val) => _formData['title'] = val,
+        onContentSaved: (val) => _formData['content'] = val,
       ),
     );
   }

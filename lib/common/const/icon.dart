@@ -32,4 +32,8 @@ class ImageConstants {
   static const String bottomMenuMemoOff = '$iconPath/icon_menu_memo_off.png';
   static const String bottomMenuDdayOn = '$iconPath/icon_menu_dday_on.png';
   static const String bottomMenuDdayOff = '$iconPath/icon_menu_dday_off.png';
+
+  // 날씨 안내 (24x24)
+  static const String weatherTemperature = '$iconPath/icon_temperature.png';
+  static const String weatherHumidity = '$iconPath/icon_humidity.png';
 }

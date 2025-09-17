@@ -28,7 +28,7 @@ class _MainMemoState extends State<MainMemo> {
     return Expanded(
       child: Stack(
         children: [
-          StreamBuilder<Map<String, List<Memo>>>(
+          StreamBuilder<Map<String, List<MemoData>>>(
             stream: memoService.watchGroupedMemos(),
             builder: (context, snapshot) {
               // 1. 오류 발생 시 오류 메시지 표시
@@ -71,7 +71,7 @@ class _MainMemoState extends State<MainMemo> {
   }
 
   // 메모 영역
-  Widget _buildMonthlyMemoSection(String monthKey, List<Memo> memos) {
+  Widget _buildMonthlyMemoSection(String monthKey, List<MemoData> memos) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 24.0),
       child: Column(
@@ -107,7 +107,7 @@ class _MainMemoState extends State<MainMemo> {
   }
 
   // 메모 목록
-  Widget _buildMemoList(List<Memo> memos) {
+  Widget _buildMemoList(List<MemoData> memos) {
     return ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),

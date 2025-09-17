@@ -5,7 +5,7 @@
 
 import 'package:drift/drift.dart';
 
-class Memos extends Table {
+class Memo extends Table {
   IntColumn get id => integer().autoIncrement()();  // PRIMARY KEY, 정수 열
   TextColumn get title => text()();                 // 제목, 글자 열
   TextColumn get content => text()();               // 내용, 글자 열

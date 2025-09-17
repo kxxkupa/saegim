@@ -5,7 +5,7 @@
 
 import 'package:drift/drift.dart';
 
-class Schedules extends Table {
+class Schedule extends Table {
   IntColumn get id => integer().autoIncrement()();  // PRIMARY KEY, 정수 열
   TextColumn get title => text()();                 // 제목, 글자 열
   TextColumn get category => text()();              // 분류, 글자 열

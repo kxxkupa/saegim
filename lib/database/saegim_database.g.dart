@@ -3,12 +3,12 @@
 part of 'saegim_database.dart';
 
 // ignore_for_file: type=lint
-class $SchedulesTable extends Schedules
-    with TableInfo<$SchedulesTable, Schedule> {
+class $ScheduleTable extends Schedule
+    with TableInfo<$ScheduleTable, ScheduleData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $SchedulesTable(this.attachedDatabase, [this._alias]);
+  $ScheduleTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
@@ -98,10 +98,10 @@ class $SchedulesTable extends Schedules
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'schedules';
+  static const String $name = 'schedule';
   @override
   VerificationContext validateIntegrity(
-    Insertable<Schedule> instance, {
+    Insertable<ScheduleData> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -163,9 +163,9 @@ class $SchedulesTable extends Schedules
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Schedule map(Map<String, dynamic> data, {String? tablePrefix}) {
+  ScheduleData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return Schedule(
+    return ScheduleData(
       id: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}id'],
@@ -198,12 +198,12 @@ class $SchedulesTable extends Schedules
   }
 
   @override
-  $SchedulesTable createAlias(String alias) {
-    return $SchedulesTable(attachedDatabase, alias);
+  $ScheduleTable createAlias(String alias) {
+    return $ScheduleTable(attachedDatabase, alias);
   }
 }
 
-class Schedule extends DataClass implements Insertable<Schedule> {
+class ScheduleData extends DataClass implements Insertable<ScheduleData> {
   final int id;
   final String title;
   final String category;
@@ -211,7 +211,7 @@ class Schedule extends DataClass implements Insertable<Schedule> {
   final DateTime startTime;
   final DateTime endTime;
   final String content;
-  const Schedule({
+  const ScheduleData({
     required this.id,
     required this.title,
     required this.category,
@@ -233,8 +233,8 @@ class Schedule extends DataClass implements Insertable<Schedule> {
     return map;
   }
 
-  SchedulesCompanion toCompanion(bool nullToAbsent) {
-    return SchedulesCompanion(
+  ScheduleCompanion toCompanion(bool nullToAbsent) {
+    return ScheduleCompanion(
       id: Value(id),
       title: Value(title),
       category: Value(category),
@@ -245,12 +245,12 @@ class Schedule extends DataClass implements Insertable<Schedule> {
     );
   }
 
-  factory Schedule.fromJson(
+  factory ScheduleData.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return Schedule(
+    return ScheduleData(
       id: serializer.fromJson<int>(json['id']),
       title: serializer.fromJson<String>(json['title']),
       category: serializer.fromJson<String>(json['category']),
@@ -274,7 +274,7 @@ class Schedule extends DataClass implements Insertable<Schedule> {
     };
   }
 
-  Schedule copyWith({
+  ScheduleData copyWith({
     int? id,
     String? title,
     String? category,
@@ -282,7 +282,7 @@ class Schedule extends DataClass implements Insertable<Schedule> {
     DateTime? startTime,
     DateTime? endTime,
     String? content,
-  }) => Schedule(
+  }) => ScheduleData(
     id: id ?? this.id,
     title: title ?? this.title,
     category: category ?? this.category,
@@ -291,8 +291,8 @@ class Schedule extends DataClass implements Insertable<Schedule> {
     endTime: endTime ?? this.endTime,
     content: content ?? this.content,
   );
-  Schedule copyWithCompanion(SchedulesCompanion data) {
-    return Schedule(
+  ScheduleData copyWithCompanion(ScheduleCompanion data) {
+    return ScheduleData(
       id: data.id.present ? data.id.value : this.id,
       title: data.title.present ? data.title.value : this.title,
       category: data.category.present ? data.category.value : this.category,
@@ -305,7 +305,7 @@ class Schedule extends DataClass implements Insertable<Schedule> {
 
   @override
   String toString() {
-    return (StringBuffer('Schedule(')
+    return (StringBuffer('ScheduleData(')
           ..write('id: $id, ')
           ..write('title: $title, ')
           ..write('category: $category, ')
@@ -323,7 +323,7 @@ class Schedule extends DataClass implements Insertable<Schedule> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is Schedule &&
+      (other is ScheduleData &&
           other.id == this.id &&
           other.title == this.title &&
           other.category == this.category &&
@@ -333,7 +333,7 @@ class Schedule extends DataClass implements Insertable<Schedule> {
           other.content == this.content);
 }
 
-class SchedulesCompanion extends UpdateCompanion<Schedule> {
+class ScheduleCompanion extends UpdateCompanion<ScheduleData> {
   final Value<int> id;
   final Value<String> title;
   final Value<String> category;
@@ -341,7 +341,7 @@ class SchedulesCompanion extends UpdateCompanion<Schedule> {
   final Value<DateTime> startTime;
   final Value<DateTime> endTime;
   final Value<String> content;
-  const SchedulesCompanion({
+  const ScheduleCompanion({
     this.id = const Value.absent(),
     this.title = const Value.absent(),
     this.category = const Value.absent(),
@@ -350,7 +350,7 @@ class SchedulesCompanion extends UpdateCompanion<Schedule> {
     this.endTime = const Value.absent(),
     this.content = const Value.absent(),
   });
-  SchedulesCompanion.insert({
+  ScheduleCompanion.insert({
     this.id = const Value.absent(),
     required String title,
     required String category,
@@ -364,7 +364,7 @@ class SchedulesCompanion extends UpdateCompanion<Schedule> {
        startTime = Value(startTime),
        endTime = Value(endTime),
        content = Value(content);
-  static Insertable<Schedule> custom({
+  static Insertable<ScheduleData> custom({
     Expression<int>? id,
     Expression<String>? title,
     Expression<String>? category,
@@ -384,7 +384,7 @@ class SchedulesCompanion extends UpdateCompanion<Schedule> {
     });
   }
 
-  SchedulesCompanion copyWith({
+  ScheduleCompanion copyWith({
     Value<int>? id,
     Value<String>? title,
     Value<String>? category,
@@ -393,7 +393,7 @@ class SchedulesCompanion extends UpdateCompanion<Schedule> {
     Value<DateTime>? endTime,
     Value<String>? content,
   }) {
-    return SchedulesCompanion(
+    return ScheduleCompanion(
       id: id ?? this.id,
       title: title ?? this.title,
       category: category ?? this.category,
@@ -433,7 +433,7 @@ class SchedulesCompanion extends UpdateCompanion<Schedule> {
 
   @override
   String toString() {
-    return (StringBuffer('SchedulesCompanion(')
+    return (StringBuffer('ScheduleCompanion(')
           ..write('id: $id, ')
           ..write('title: $title, ')
           ..write('category: $category, ')
@@ -446,11 +446,11 @@ class SchedulesCompanion extends UpdateCompanion<Schedule> {
   }
 }
 
-class $MemosTable extends Memos with TableInfo<$MemosTable, Memo> {
+class $MemoTable extends Memo with TableInfo<$MemoTable, MemoData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $MemosTable(this.attachedDatabase, [this._alias]);
+  $MemoTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
@@ -499,10 +499,10 @@ class $MemosTable extends Memos with TableInfo<$MemosTable, Memo> {
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'memos';
+  static const String $name = 'memo';
   @override
   VerificationContext validateIntegrity(
-    Insertable<Memo> instance, {
+    Insertable<MemoData> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -540,9 +540,9 @@ class $MemosTable extends Memos with TableInfo<$MemosTable, Memo> {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Memo map(Map<String, dynamic> data, {String? tablePrefix}) {
+  MemoData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return Memo(
+    return MemoData(
       id: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}id'],
@@ -563,17 +563,17 @@ class $MemosTable extends Memos with TableInfo<$MemosTable, Memo> {
   }
 
   @override
-  $MemosTable createAlias(String alias) {
-    return $MemosTable(attachedDatabase, alias);
+  $MemoTable createAlias(String alias) {
+    return $MemoTable(attachedDatabase, alias);
   }
 }
 
-class Memo extends DataClass implements Insertable<Memo> {
+class MemoData extends DataClass implements Insertable<MemoData> {
   final int id;
   final String title;
   final String content;
   final DateTime date;
-  const Memo({
+  const MemoData({
     required this.id,
     required this.title,
     required this.content,
@@ -589,8 +589,8 @@ class Memo extends DataClass implements Insertable<Memo> {
     return map;
   }
 
-  MemosCompanion toCompanion(bool nullToAbsent) {
-    return MemosCompanion(
+  MemoCompanion toCompanion(bool nullToAbsent) {
+    return MemoCompanion(
       id: Value(id),
       title: Value(title),
       content: Value(content),
@@ -598,12 +598,12 @@ class Memo extends DataClass implements Insertable<Memo> {
     );
   }
 
-  factory Memo.fromJson(
+  factory MemoData.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return Memo(
+    return MemoData(
       id: serializer.fromJson<int>(json['id']),
       title: serializer.fromJson<String>(json['title']),
       content: serializer.fromJson<String>(json['content']),
@@ -621,15 +621,19 @@ class Memo extends DataClass implements Insertable<Memo> {
     };
   }
 
-  Memo copyWith({int? id, String? title, String? content, DateTime? date}) =>
-      Memo(
-        id: id ?? this.id,
-        title: title ?? this.title,
-        content: content ?? this.content,
-        date: date ?? this.date,
-      );
-  Memo copyWithCompanion(MemosCompanion data) {
-    return Memo(
+  MemoData copyWith({
+    int? id,
+    String? title,
+    String? content,
+    DateTime? date,
+  }) => MemoData(
+    id: id ?? this.id,
+    title: title ?? this.title,
+    content: content ?? this.content,
+    date: date ?? this.date,
+  );
+  MemoData copyWithCompanion(MemoCompanion data) {
+    return MemoData(
       id: data.id.present ? data.id.value : this.id,
       title: data.title.present ? data.title.value : this.title,
       content: data.content.present ? data.content.value : this.content,
@@ -639,7 +643,7 @@ class Memo extends DataClass implements Insertable<Memo> {
 
   @override
   String toString() {
-    return (StringBuffer('Memo(')
+    return (StringBuffer('MemoData(')
           ..write('id: $id, ')
           ..write('title: $title, ')
           ..write('content: $content, ')
@@ -653,25 +657,25 @@ class Memo extends DataClass implements Insertable<Memo> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is Memo &&
+      (other is MemoData &&
           other.id == this.id &&
           other.title == this.title &&
           other.content == this.content &&
           other.date == this.date);
 }
 
-class MemosCompanion extends UpdateCompanion<Memo> {
+class MemoCompanion extends UpdateCompanion<MemoData> {
   final Value<int> id;
   final Value<String> title;
   final Value<String> content;
   final Value<DateTime> date;
-  const MemosCompanion({
+  const MemoCompanion({
     this.id = const Value.absent(),
     this.title = const Value.absent(),
     this.content = const Value.absent(),
     this.date = const Value.absent(),
   });
-  MemosCompanion.insert({
+  MemoCompanion.insert({
     this.id = const Value.absent(),
     required String title,
     required String content,
@@ -679,7 +683,7 @@ class MemosCompanion extends UpdateCompanion<Memo> {
   }) : title = Value(title),
        content = Value(content),
        date = Value(date);
-  static Insertable<Memo> custom({
+  static Insertable<MemoData> custom({
     Expression<int>? id,
     Expression<String>? title,
     Expression<String>? content,
@@ -693,13 +697,13 @@ class MemosCompanion extends UpdateCompanion<Memo> {
     });
   }
 
-  MemosCompanion copyWith({
+  MemoCompanion copyWith({
     Value<int>? id,
     Value<String>? title,
     Value<String>? content,
     Value<DateTime>? date,
   }) {
-    return MemosCompanion(
+    return MemoCompanion(
       id: id ?? this.id,
       title: title ?? this.title,
       content: content ?? this.content,
@@ -727,7 +731,7 @@ class MemosCompanion extends UpdateCompanion<Memo> {
 
   @override
   String toString() {
-    return (StringBuffer('MemosCompanion(')
+    return (StringBuffer('MemoCompanion(')
           ..write('id: $id, ')
           ..write('title: $title, ')
           ..write('content: $content, ')
@@ -737,22 +741,422 @@ class MemosCompanion extends UpdateCompanion<Memo> {
   }
 }
 
+class $DdayTable extends Dday with TableInfo<$DdayTable, DdayData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $DdayTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _titleMeta = const VerificationMeta('title');
+  @override
+  late final GeneratedColumn<String> title = GeneratedColumn<String>(
+    'title',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _startTimeMeta = const VerificationMeta(
+    'startTime',
+  );
+  @override
+  late final GeneratedColumn<DateTime> startTime = GeneratedColumn<DateTime>(
+    'start_time',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _endTimeMeta = const VerificationMeta(
+    'endTime',
+  );
+  @override
+  late final GeneratedColumn<DateTime> endTime = GeneratedColumn<DateTime>(
+    'end_time',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _contentMeta = const VerificationMeta(
+    'content',
+  );
+  @override
+  late final GeneratedColumn<String> content = GeneratedColumn<String>(
+    'content',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<DdayType, String> type =
+      GeneratedColumn<String>(
+        'type',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<DdayType>($DdayTable.$convertertype);
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    title,
+    startTime,
+    endTime,
+    content,
+    type,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'dday';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<DdayData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('title')) {
+      context.handle(
+        _titleMeta,
+        title.isAcceptableOrUnknown(data['title']!, _titleMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_titleMeta);
+    }
+    if (data.containsKey('start_time')) {
+      context.handle(
+        _startTimeMeta,
+        startTime.isAcceptableOrUnknown(data['start_time']!, _startTimeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_startTimeMeta);
+    }
+    if (data.containsKey('end_time')) {
+      context.handle(
+        _endTimeMeta,
+        endTime.isAcceptableOrUnknown(data['end_time']!, _endTimeMeta),
+      );
+    }
+    if (data.containsKey('content')) {
+      context.handle(
+        _contentMeta,
+        content.isAcceptableOrUnknown(data['content']!, _contentMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_contentMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  DdayData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return DdayData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      title: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}title'],
+      )!,
+      startTime: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}start_time'],
+      )!,
+      endTime: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}end_time'],
+      ),
+      content: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}content'],
+      )!,
+      type: $DdayTable.$convertertype.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}type'],
+        )!,
+      ),
+    );
+  }
+
+  @override
+  $DdayTable createAlias(String alias) {
+    return $DdayTable(attachedDatabase, alias);
+  }
+
+  static JsonTypeConverter2<DdayType, String, String> $convertertype =
+      const EnumNameConverter<DdayType>(DdayType.values);
+}
+
+class DdayData extends DataClass implements Insertable<DdayData> {
+  final int id;
+  final String title;
+  final DateTime startTime;
+  final DateTime? endTime;
+  final String content;
+  final DdayType type;
+  const DdayData({
+    required this.id,
+    required this.title,
+    required this.startTime,
+    this.endTime,
+    required this.content,
+    required this.type,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['title'] = Variable<String>(title);
+    map['start_time'] = Variable<DateTime>(startTime);
+    if (!nullToAbsent || endTime != null) {
+      map['end_time'] = Variable<DateTime>(endTime);
+    }
+    map['content'] = Variable<String>(content);
+    {
+      map['type'] = Variable<String>($DdayTable.$convertertype.toSql(type));
+    }
+    return map;
+  }
+
+  DdayCompanion toCompanion(bool nullToAbsent) {
+    return DdayCompanion(
+      id: Value(id),
+      title: Value(title),
+      startTime: Value(startTime),
+      endTime: endTime == null && nullToAbsent
+          ? const Value.absent()
+          : Value(endTime),
+      content: Value(content),
+      type: Value(type),
+    );
+  }
+
+  factory DdayData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return DdayData(
+      id: serializer.fromJson<int>(json['id']),
+      title: serializer.fromJson<String>(json['title']),
+      startTime: serializer.fromJson<DateTime>(json['startTime']),
+      endTime: serializer.fromJson<DateTime?>(json['endTime']),
+      content: serializer.fromJson<String>(json['content']),
+      type: $DdayTable.$convertertype.fromJson(
+        serializer.fromJson<String>(json['type']),
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'title': serializer.toJson<String>(title),
+      'startTime': serializer.toJson<DateTime>(startTime),
+      'endTime': serializer.toJson<DateTime?>(endTime),
+      'content': serializer.toJson<String>(content),
+      'type': serializer.toJson<String>($DdayTable.$convertertype.toJson(type)),
+    };
+  }
+
+  DdayData copyWith({
+    int? id,
+    String? title,
+    DateTime? startTime,
+    Value<DateTime?> endTime = const Value.absent(),
+    String? content,
+    DdayType? type,
+  }) => DdayData(
+    id: id ?? this.id,
+    title: title ?? this.title,
+    startTime: startTime ?? this.startTime,
+    endTime: endTime.present ? endTime.value : this.endTime,
+    content: content ?? this.content,
+    type: type ?? this.type,
+  );
+  DdayData copyWithCompanion(DdayCompanion data) {
+    return DdayData(
+      id: data.id.present ? data.id.value : this.id,
+      title: data.title.present ? data.title.value : this.title,
+      startTime: data.startTime.present ? data.startTime.value : this.startTime,
+      endTime: data.endTime.present ? data.endTime.value : this.endTime,
+      content: data.content.present ? data.content.value : this.content,
+      type: data.type.present ? data.type.value : this.type,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DdayData(')
+          ..write('id: $id, ')
+          ..write('title: $title, ')
+          ..write('startTime: $startTime, ')
+          ..write('endTime: $endTime, ')
+          ..write('content: $content, ')
+          ..write('type: $type')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, title, startTime, endTime, content, type);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is DdayData &&
+          other.id == this.id &&
+          other.title == this.title &&
+          other.startTime == this.startTime &&
+          other.endTime == this.endTime &&
+          other.content == this.content &&
+          other.type == this.type);
+}
+
+class DdayCompanion extends UpdateCompanion<DdayData> {
+  final Value<int> id;
+  final Value<String> title;
+  final Value<DateTime> startTime;
+  final Value<DateTime?> endTime;
+  final Value<String> content;
+  final Value<DdayType> type;
+  const DdayCompanion({
+    this.id = const Value.absent(),
+    this.title = const Value.absent(),
+    this.startTime = const Value.absent(),
+    this.endTime = const Value.absent(),
+    this.content = const Value.absent(),
+    this.type = const Value.absent(),
+  });
+  DdayCompanion.insert({
+    this.id = const Value.absent(),
+    required String title,
+    required DateTime startTime,
+    this.endTime = const Value.absent(),
+    required String content,
+    required DdayType type,
+  }) : title = Value(title),
+       startTime = Value(startTime),
+       content = Value(content),
+       type = Value(type);
+  static Insertable<DdayData> custom({
+    Expression<int>? id,
+    Expression<String>? title,
+    Expression<DateTime>? startTime,
+    Expression<DateTime>? endTime,
+    Expression<String>? content,
+    Expression<String>? type,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (title != null) 'title': title,
+      if (startTime != null) 'start_time': startTime,
+      if (endTime != null) 'end_time': endTime,
+      if (content != null) 'content': content,
+      if (type != null) 'type': type,
+    });
+  }
+
+  DdayCompanion copyWith({
+    Value<int>? id,
+    Value<String>? title,
+    Value<DateTime>? startTime,
+    Value<DateTime?>? endTime,
+    Value<String>? content,
+    Value<DdayType>? type,
+  }) {
+    return DdayCompanion(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      startTime: startTime ?? this.startTime,
+      endTime: endTime ?? this.endTime,
+      content: content ?? this.content,
+      type: type ?? this.type,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (title.present) {
+      map['title'] = Variable<String>(title.value);
+    }
+    if (startTime.present) {
+      map['start_time'] = Variable<DateTime>(startTime.value);
+    }
+    if (endTime.present) {
+      map['end_time'] = Variable<DateTime>(endTime.value);
+    }
+    if (content.present) {
+      map['content'] = Variable<String>(content.value);
+    }
+    if (type.present) {
+      map['type'] = Variable<String>(
+        $DdayTable.$convertertype.toSql(type.value),
+      );
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DdayCompanion(')
+          ..write('id: $id, ')
+          ..write('title: $title, ')
+          ..write('startTime: $startTime, ')
+          ..write('endTime: $endTime, ')
+          ..write('content: $content, ')
+          ..write('type: $type')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$LocalDatabase extends GeneratedDatabase {
   _$LocalDatabase(QueryExecutor e) : super(e);
   $LocalDatabaseManager get managers => $LocalDatabaseManager(this);
-  late final $SchedulesTable schedules = $SchedulesTable(this);
-  late final $MemosTable memos = $MemosTable(this);
+  late final $ScheduleTable schedule = $ScheduleTable(this);
+  late final $MemoTable memo = $MemoTable(this);
+  late final $DdayTable dday = $DdayTable(this);
   late final ScheduleDao scheduleDao = ScheduleDao(this as LocalDatabase);
   late final MemoDao memoDao = MemoDao(this as LocalDatabase);
+  late final DdayDao ddayDao = DdayDao(this as LocalDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [schedules, memos];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [schedule, memo, dday];
 }
 
-typedef $$SchedulesTableCreateCompanionBuilder =
-    SchedulesCompanion Function({
+typedef $$ScheduleTableCreateCompanionBuilder =
+    ScheduleCompanion Function({
       Value<int> id,
       required String title,
       required String category,
@@ -761,8 +1165,8 @@ typedef $$SchedulesTableCreateCompanionBuilder =
       required DateTime endTime,
       required String content,
     });
-typedef $$SchedulesTableUpdateCompanionBuilder =
-    SchedulesCompanion Function({
+typedef $$ScheduleTableUpdateCompanionBuilder =
+    ScheduleCompanion Function({
       Value<int> id,
       Value<String> title,
       Value<String> category,
@@ -772,9 +1176,9 @@ typedef $$SchedulesTableUpdateCompanionBuilder =
       Value<String> content,
     });
 
-class $$SchedulesTableFilterComposer
-    extends Composer<_$LocalDatabase, $SchedulesTable> {
-  $$SchedulesTableFilterComposer({
+class $$ScheduleTableFilterComposer
+    extends Composer<_$LocalDatabase, $ScheduleTable> {
+  $$ScheduleTableFilterComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -817,9 +1221,9 @@ class $$SchedulesTableFilterComposer
   );
 }
 
-class $$SchedulesTableOrderingComposer
-    extends Composer<_$LocalDatabase, $SchedulesTable> {
-  $$SchedulesTableOrderingComposer({
+class $$ScheduleTableOrderingComposer
+    extends Composer<_$LocalDatabase, $ScheduleTable> {
+  $$ScheduleTableOrderingComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -862,9 +1266,9 @@ class $$SchedulesTableOrderingComposer
   );
 }
 
-class $$SchedulesTableAnnotationComposer
-    extends Composer<_$LocalDatabase, $SchedulesTable> {
-  $$SchedulesTableAnnotationComposer({
+class $$ScheduleTableAnnotationComposer
+    extends Composer<_$LocalDatabase, $ScheduleTable> {
+  $$ScheduleTableAnnotationComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -893,35 +1297,35 @@ class $$SchedulesTableAnnotationComposer
       $composableBuilder(column: $table.content, builder: (column) => column);
 }
 
-class $$SchedulesTableTableManager
+class $$ScheduleTableTableManager
     extends
         RootTableManager<
           _$LocalDatabase,
-          $SchedulesTable,
-          Schedule,
-          $$SchedulesTableFilterComposer,
-          $$SchedulesTableOrderingComposer,
-          $$SchedulesTableAnnotationComposer,
-          $$SchedulesTableCreateCompanionBuilder,
-          $$SchedulesTableUpdateCompanionBuilder,
+          $ScheduleTable,
+          ScheduleData,
+          $$ScheduleTableFilterComposer,
+          $$ScheduleTableOrderingComposer,
+          $$ScheduleTableAnnotationComposer,
+          $$ScheduleTableCreateCompanionBuilder,
+          $$ScheduleTableUpdateCompanionBuilder,
           (
-            Schedule,
-            BaseReferences<_$LocalDatabase, $SchedulesTable, Schedule>,
+            ScheduleData,
+            BaseReferences<_$LocalDatabase, $ScheduleTable, ScheduleData>,
           ),
-          Schedule,
+          ScheduleData,
           PrefetchHooks Function()
         > {
-  $$SchedulesTableTableManager(_$LocalDatabase db, $SchedulesTable table)
+  $$ScheduleTableTableManager(_$LocalDatabase db, $ScheduleTable table)
     : super(
         TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
-              $$SchedulesTableFilterComposer($db: db, $table: table),
+              $$ScheduleTableFilterComposer($db: db, $table: table),
           createOrderingComposer: () =>
-              $$SchedulesTableOrderingComposer($db: db, $table: table),
+              $$ScheduleTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
-              $$SchedulesTableAnnotationComposer($db: db, $table: table),
+              $$ScheduleTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
@@ -931,7 +1335,7 @@ class $$SchedulesTableTableManager
                 Value<DateTime> startTime = const Value.absent(),
                 Value<DateTime> endTime = const Value.absent(),
                 Value<String> content = const Value.absent(),
-              }) => SchedulesCompanion(
+              }) => ScheduleCompanion(
                 id: id,
                 title: title,
                 category: category,
@@ -949,7 +1353,7 @@ class $$SchedulesTableTableManager
                 required DateTime startTime,
                 required DateTime endTime,
                 required String content,
-              }) => SchedulesCompanion.insert(
+              }) => ScheduleCompanion.insert(
                 id: id,
                 title: title,
                 category: category,
@@ -966,38 +1370,40 @@ class $$SchedulesTableTableManager
       );
 }
 
-typedef $$SchedulesTableProcessedTableManager =
+typedef $$ScheduleTableProcessedTableManager =
     ProcessedTableManager<
       _$LocalDatabase,
-      $SchedulesTable,
-      Schedule,
-      $$SchedulesTableFilterComposer,
-      $$SchedulesTableOrderingComposer,
-      $$SchedulesTableAnnotationComposer,
-      $$SchedulesTableCreateCompanionBuilder,
-      $$SchedulesTableUpdateCompanionBuilder,
-      (Schedule, BaseReferences<_$LocalDatabase, $SchedulesTable, Schedule>),
-      Schedule,
+      $ScheduleTable,
+      ScheduleData,
+      $$ScheduleTableFilterComposer,
+      $$ScheduleTableOrderingComposer,
+      $$ScheduleTableAnnotationComposer,
+      $$ScheduleTableCreateCompanionBuilder,
+      $$ScheduleTableUpdateCompanionBuilder,
+      (
+        ScheduleData,
+        BaseReferences<_$LocalDatabase, $ScheduleTable, ScheduleData>,
+      ),
+      ScheduleData,
       PrefetchHooks Function()
     >;
-typedef $$MemosTableCreateCompanionBuilder =
-    MemosCompanion Function({
+typedef $$MemoTableCreateCompanionBuilder =
+    MemoCompanion Function({
       Value<int> id,
       required String title,
       required String content,
       required DateTime date,
     });
-typedef $$MemosTableUpdateCompanionBuilder =
-    MemosCompanion Function({
+typedef $$MemoTableUpdateCompanionBuilder =
+    MemoCompanion Function({
       Value<int> id,
       Value<String> title,
       Value<String> content,
       Value<DateTime> date,
     });
 
-class $$MemosTableFilterComposer
-    extends Composer<_$LocalDatabase, $MemosTable> {
-  $$MemosTableFilterComposer({
+class $$MemoTableFilterComposer extends Composer<_$LocalDatabase, $MemoTable> {
+  $$MemoTableFilterComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -1025,9 +1431,9 @@ class $$MemosTableFilterComposer
   );
 }
 
-class $$MemosTableOrderingComposer
-    extends Composer<_$LocalDatabase, $MemosTable> {
-  $$MemosTableOrderingComposer({
+class $$MemoTableOrderingComposer
+    extends Composer<_$LocalDatabase, $MemoTable> {
+  $$MemoTableOrderingComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -1055,9 +1461,9 @@ class $$MemosTableOrderingComposer
   );
 }
 
-class $$MemosTableAnnotationComposer
-    extends Composer<_$LocalDatabase, $MemosTable> {
-  $$MemosTableAnnotationComposer({
+class $$MemoTableAnnotationComposer
+    extends Composer<_$LocalDatabase, $MemoTable> {
+  $$MemoTableAnnotationComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -1077,39 +1483,39 @@ class $$MemosTableAnnotationComposer
       $composableBuilder(column: $table.date, builder: (column) => column);
 }
 
-class $$MemosTableTableManager
+class $$MemoTableTableManager
     extends
         RootTableManager<
           _$LocalDatabase,
-          $MemosTable,
-          Memo,
-          $$MemosTableFilterComposer,
-          $$MemosTableOrderingComposer,
-          $$MemosTableAnnotationComposer,
-          $$MemosTableCreateCompanionBuilder,
-          $$MemosTableUpdateCompanionBuilder,
-          (Memo, BaseReferences<_$LocalDatabase, $MemosTable, Memo>),
-          Memo,
+          $MemoTable,
+          MemoData,
+          $$MemoTableFilterComposer,
+          $$MemoTableOrderingComposer,
+          $$MemoTableAnnotationComposer,
+          $$MemoTableCreateCompanionBuilder,
+          $$MemoTableUpdateCompanionBuilder,
+          (MemoData, BaseReferences<_$LocalDatabase, $MemoTable, MemoData>),
+          MemoData,
           PrefetchHooks Function()
         > {
-  $$MemosTableTableManager(_$LocalDatabase db, $MemosTable table)
+  $$MemoTableTableManager(_$LocalDatabase db, $MemoTable table)
     : super(
         TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
-              $$MemosTableFilterComposer($db: db, $table: table),
+              $$MemoTableFilterComposer($db: db, $table: table),
           createOrderingComposer: () =>
-              $$MemosTableOrderingComposer($db: db, $table: table),
+              $$MemoTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
-              $$MemosTableAnnotationComposer($db: db, $table: table),
+              $$MemoTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
                 Value<String> title = const Value.absent(),
                 Value<String> content = const Value.absent(),
                 Value<DateTime> date = const Value.absent(),
-              }) => MemosCompanion(
+              }) => MemoCompanion(
                 id: id,
                 title: title,
                 content: content,
@@ -1121,7 +1527,7 @@ class $$MemosTableTableManager
                 required String title,
                 required String content,
                 required DateTime date,
-              }) => MemosCompanion.insert(
+              }) => MemoCompanion.insert(
                 id: id,
                 title: title,
                 content: content,
@@ -1135,33 +1541,243 @@ class $$MemosTableTableManager
       );
 }
 
-typedef $$MemosTableProcessedTableManager =
+typedef $$MemoTableProcessedTableManager =
     ProcessedTableManager<
       _$LocalDatabase,
-      $MemosTable,
-      Memo,
-      $$MemosTableFilterComposer,
-      $$MemosTableOrderingComposer,
-      $$MemosTableAnnotationComposer,
-      $$MemosTableCreateCompanionBuilder,
-      $$MemosTableUpdateCompanionBuilder,
-      (Memo, BaseReferences<_$LocalDatabase, $MemosTable, Memo>),
-      Memo,
+      $MemoTable,
+      MemoData,
+      $$MemoTableFilterComposer,
+      $$MemoTableOrderingComposer,
+      $$MemoTableAnnotationComposer,
+      $$MemoTableCreateCompanionBuilder,
+      $$MemoTableUpdateCompanionBuilder,
+      (MemoData, BaseReferences<_$LocalDatabase, $MemoTable, MemoData>),
+      MemoData,
+      PrefetchHooks Function()
+    >;
+typedef $$DdayTableCreateCompanionBuilder =
+    DdayCompanion Function({
+      Value<int> id,
+      required String title,
+      required DateTime startTime,
+      Value<DateTime?> endTime,
+      required String content,
+      required DdayType type,
+    });
+typedef $$DdayTableUpdateCompanionBuilder =
+    DdayCompanion Function({
+      Value<int> id,
+      Value<String> title,
+      Value<DateTime> startTime,
+      Value<DateTime?> endTime,
+      Value<String> content,
+      Value<DdayType> type,
+    });
+
+class $$DdayTableFilterComposer extends Composer<_$LocalDatabase, $DdayTable> {
+  $$DdayTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get startTime => $composableBuilder(
+    column: $table.startTime,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get endTime => $composableBuilder(
+    column: $table.endTime,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get content => $composableBuilder(
+    column: $table.content,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<DdayType, DdayType, String> get type =>
+      $composableBuilder(
+        column: $table.type,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+}
+
+class $$DdayTableOrderingComposer
+    extends Composer<_$LocalDatabase, $DdayTable> {
+  $$DdayTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get startTime => $composableBuilder(
+    column: $table.startTime,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get endTime => $composableBuilder(
+    column: $table.endTime,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get content => $composableBuilder(
+    column: $table.content,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get type => $composableBuilder(
+    column: $table.type,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$DdayTableAnnotationComposer
+    extends Composer<_$LocalDatabase, $DdayTable> {
+  $$DdayTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get title =>
+      $composableBuilder(column: $table.title, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get startTime =>
+      $composableBuilder(column: $table.startTime, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get endTime =>
+      $composableBuilder(column: $table.endTime, builder: (column) => column);
+
+  GeneratedColumn<String> get content =>
+      $composableBuilder(column: $table.content, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<DdayType, String> get type =>
+      $composableBuilder(column: $table.type, builder: (column) => column);
+}
+
+class $$DdayTableTableManager
+    extends
+        RootTableManager<
+          _$LocalDatabase,
+          $DdayTable,
+          DdayData,
+          $$DdayTableFilterComposer,
+          $$DdayTableOrderingComposer,
+          $$DdayTableAnnotationComposer,
+          $$DdayTableCreateCompanionBuilder,
+          $$DdayTableUpdateCompanionBuilder,
+          (DdayData, BaseReferences<_$LocalDatabase, $DdayTable, DdayData>),
+          DdayData,
+          PrefetchHooks Function()
+        > {
+  $$DdayTableTableManager(_$LocalDatabase db, $DdayTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$DdayTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$DdayTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$DdayTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> title = const Value.absent(),
+                Value<DateTime> startTime = const Value.absent(),
+                Value<DateTime?> endTime = const Value.absent(),
+                Value<String> content = const Value.absent(),
+                Value<DdayType> type = const Value.absent(),
+              }) => DdayCompanion(
+                id: id,
+                title: title,
+                startTime: startTime,
+                endTime: endTime,
+                content: content,
+                type: type,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String title,
+                required DateTime startTime,
+                Value<DateTime?> endTime = const Value.absent(),
+                required String content,
+                required DdayType type,
+              }) => DdayCompanion.insert(
+                id: id,
+                title: title,
+                startTime: startTime,
+                endTime: endTime,
+                content: content,
+                type: type,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$DdayTableProcessedTableManager =
+    ProcessedTableManager<
+      _$LocalDatabase,
+      $DdayTable,
+      DdayData,
+      $$DdayTableFilterComposer,
+      $$DdayTableOrderingComposer,
+      $$DdayTableAnnotationComposer,
+      $$DdayTableCreateCompanionBuilder,
+      $$DdayTableUpdateCompanionBuilder,
+      (DdayData, BaseReferences<_$LocalDatabase, $DdayTable, DdayData>),
+      DdayData,
       PrefetchHooks Function()
     >;
 
 class $LocalDatabaseManager {
   final _$LocalDatabase _db;
   $LocalDatabaseManager(this._db);
-  $$SchedulesTableTableManager get schedules =>
-      $$SchedulesTableTableManager(_db, _db.schedules);
-  $$MemosTableTableManager get memos =>
-      $$MemosTableTableManager(_db, _db.memos);
+  $$ScheduleTableTableManager get schedule =>
+      $$ScheduleTableTableManager(_db, _db.schedule);
+  $$MemoTableTableManager get memo => $$MemoTableTableManager(_db, _db.memo);
+  $$DdayTableTableManager get dday => $$DdayTableTableManager(_db, _db.dday);
 }
 
 mixin _$ScheduleDaoMixin on DatabaseAccessor<LocalDatabase> {
-  $SchedulesTable get schedules => attachedDatabase.schedules;
+  $ScheduleTable get schedule => attachedDatabase.schedule;
 }
 mixin _$MemoDaoMixin on DatabaseAccessor<LocalDatabase> {
-  $MemosTable get memos => attachedDatabase.memos;
+  $MemoTable get memo => attachedDatabase.memo;
+}
+mixin _$DdayDaoMixin on DatabaseAccessor<LocalDatabase> {
+  $DdayTable get dday => attachedDatabase.dday;
 }

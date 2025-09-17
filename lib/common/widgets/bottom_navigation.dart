@@ -23,6 +23,9 @@ class BottomNavigation extends StatelessWidget {
 
     // 현재 경로가 메모 관련 페이지인지 확인
     final isMemoSelected = currentRoute.startsWith(memoRoute);
+    
+    // 현재 경로가 메모 관련 페이지인지 확인
+    final isDdaySelected = currentRoute.startsWith(ddayRoute);
 
     return Container(
       width: double.infinity,
@@ -61,6 +64,22 @@ class BottomNavigation extends StatelessWidget {
                 : () {
                     Navigator.of(context).pushNamedAndRemoveUntil(
                       memoRoute,
+                      (Route<dynamic> route) => false,
+                    );
+                  },
+          ),
+
+          // 디데이
+          _BottomNavigationItem(
+            label: '디데이',
+            onIcon: ImageConstants.bottomMenuDdayOn,
+            offIcon: ImageConstants.bottomMenuDdayOff,
+            isSelected: isDdaySelected,
+            onTap: isDdaySelected
+                ? null
+                : () {
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      ddayRoute,
                       (Route<dynamic> route) => false,
                     );
                   },

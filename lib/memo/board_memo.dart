@@ -9,7 +9,7 @@ import 'package:saegim/common/widgets/custom_text_field.dart';
 import 'package:saegim/database/saegim_database.dart';
 
 class BoardMemo extends StatefulWidget {
-  final Memo? memo;
+  final MemoData? memo;
   final ValueChanged<String?>? onTitleSaved;
   final ValueChanged<String?>? onContentSaved;
 

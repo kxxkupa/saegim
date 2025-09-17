@@ -46,7 +46,7 @@ class _CalendarScreenState extends State<ScheduleScreen> {
 
             // 상세 일정
             Expanded(
-              child: StreamBuilder<List<Schedule>>(
+              child: StreamBuilder<List<ScheduleData>>(
                 stream: GetIt.I<ScheduleService>().watchSchedules(selectedDate),
                 builder: (context, snapshot) {
                   // 1. 오류 발생 시 오류 메시지 표시
@@ -79,7 +79,6 @@ class _CalendarScreenState extends State<ScheduleScreen> {
                                 : Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 28.0),
                                     child: ListView.builder(
-                                      physics: schedules.length > 1 ? const BouncingScrollPhysics() : const NeverScrollableScrollPhysics(),
                                       itemCount: schedules.length,
                                       itemBuilder: (context, index) {
                                         final schedule = schedules[index];
@@ -116,7 +115,7 @@ class _CalendarScreenState extends State<ScheduleScreen> {
   }
 
   // 일정 목록
-  Widget _buildScheduleSection(Schedule schedule) {
+  Widget _buildScheduleSection(ScheduleData schedule) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
       child: ScheduleList(

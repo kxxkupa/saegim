@@ -11,19 +11,23 @@ import 'package:saegim/common/const/public_style.dart';
 class CustomTextField extends StatefulWidget {
   final TextEditingController? controller;
   final String label;
-  final bool isTime;
+  final bool? isTime;
+  final bool? isDate;
   final FormFieldSetter<String>? onSaved;
   final FormFieldValidator<String> validator;
   final void Function(String)? onValidatonError;
+  final bool? readOnly;
 
   const CustomTextField({
     super.key,
     this.controller,
     required this.label,
-    required this.isTime,
+    this.isTime,
+    this.isDate,
     required this.onSaved,
     required this.validator,
     this.onValidatonError,
+    this.readOnly,
   });
 
   @override
@@ -73,9 +77,20 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 controller: widget.controller,
                 cursorColor: primaryColor,
                 maxLines: 1,
-                onTap: widget.isTime ? () => selectDateTime(context) : null,
+                readOnly: widget.readOnly ?? false,
+                onTap: () {
+                  if (widget.isTime == true) {
+                    selectDateTime(context, false);
+                  } else if (widget.isDate == true) {
+                    selectDateTime(context, true);
+                  }
+                },
                 decoration: myInputDecoration.copyWith(
-                  hintText: widget.isTime ? '날짜/시간을 선택하세요' : '내용을 입력하세요'
+                  hintText: (widget.isTime == true)
+                    ? '날짜/시간을 선택하세요'
+                    : (widget.isDate == true)
+                      ? '날짜를 선택하세요'
+                      : '내용을 입력하세요',
                 ),
                 style: textSize16.copyWith(fontWeight: FontWeight.w500),
               ),
@@ -87,7 +102,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   }
 
   // 날짜/시간 선택기를 띄우는 함수
-  Future<void> selectDateTime(BuildContext context) async {
+  Future<void> selectDateTime(BuildContext context, bool isDate) async {
     // 상태 저장을 위한 변수
     DateTime tempDateTime = selectedDateTime ?? DateTime.now();
 
@@ -95,6 +110,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       context: context,
       builder: (BuildContext context) {
         return _DateTimePickerDialog(
+          isDate: isDate,
           initialDateTime: tempDateTime,
           onDateTimeChanged: (DateTime newDateTime) {
             tempDateTime = newDateTime;
@@ -105,7 +121,16 @@ class _CustomTextFieldState extends State<CustomTextField> {
     if (confirmed == true) {
       setState(() {
         selectedDateTime = tempDateTime;
-        widget.controller!.text = DateFormat('yyyy년 MM월 dd일 HH시 mm분').format(tempDateTime);
+
+        if (widget.controller != null) {
+          if (isDate) {
+            // isDate가 true일 때 날짜만 포맷팅
+            widget.controller!.text = DateFormat('yyyy.MM.dd').format(tempDateTime);
+          } else {
+            // isTime일 때 날짜와 시간 모두 포맷팅
+            widget.controller!.text = DateFormat('yyyy년 MM월 dd일 HH시 mm분').format(tempDateTime);
+          }
+        }
       });
     }
   }
@@ -114,10 +139,12 @@ class _CustomTextFieldState extends State<CustomTextField> {
 class _DateTimePickerDialog extends StatefulWidget {
   final DateTime initialDateTime;
   final ValueChanged<DateTime> onDateTimeChanged;
+  final bool isDate;
 
   const _DateTimePickerDialog({
     required this.initialDateTime,
     required this.onDateTimeChanged,
+    required this.isDate,
   });
 
   @override
@@ -184,42 +211,44 @@ class _DateTimePickerDialogState extends State<_DateTimePickerDialog> {
             ),
             const Divider(height: 1, color: primaryColor),
 
-            // 시간 선택기
-            SizedBox(
-              height: 150,
-              child: TimePickerSpinner(
-                is24HourMode: true, // 24시간 모드 사용 여부
-                time: tempDateTime,
-                normalTextStyle: TextStyle(
-                  fontSize: 24,
-                  color: listBackground, // 선택되지 않은 숫자 색상
-                ),
-                highlightedTextStyle: TextStyle(
-                  fontSize: 24,
-                  color: primaryColor, // 선택된 숫자 색상 // 선택된 숫자의 배경색
-                ),
-                onTimeChange: (DateTime newDateTime) {
-                  setState(() {
-                    tempDateTime = newDateTime; // 변경된 시간을 직접 할당
-                    widget.onDateTimeChanged(tempDateTime);
-                  });
-                },
-              )
-            ),
-            // '취소'와 '확인' 버튼
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context, false),
-                  child: Text('취소', style: TextStyle(color: primaryColor)),
-                ),
-                TextButton(
-                  onPressed: () => Navigator.pop(context, true),
-                  child: Text('확인', style: TextStyle(color: primaryColor)),
-                ),
-              ],
-            ),
+            if (widget.isDate == false)
+              // 시간 선택기
+              SizedBox(
+                height: 150,
+                child: TimePickerSpinner(
+                  is24HourMode: true, // 24시간 모드 사용 여부
+                  time: tempDateTime,
+                  normalTextStyle: TextStyle(
+                    fontSize: 24,
+                    color: listBackground, // 선택되지 않은 숫자 색상
+                  ),
+                  highlightedTextStyle: TextStyle(
+                    fontSize: 24,
+                    color: primaryColor, // 선택된 숫자 색상 // 선택된 숫자의 배경색
+                  ),
+                  onTimeChange: (DateTime newDateTime) {
+                    setState(() {
+                      tempDateTime = newDateTime; // 변경된 시간을 직접 할당
+                      widget.onDateTimeChanged(tempDateTime);
+                    });
+                  },
+                )
+              ),
+
+              // '취소'와 '확인' 버튼
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, false),
+                    child: Text('취소', style: TextStyle(color: primaryColor)),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, true),
+                    child: Text('확인', style: TextStyle(color: primaryColor)),
+                  ),
+                ],
+              ),
           ],
         ),
       ),

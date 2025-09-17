@@ -10,7 +10,7 @@ import 'package:saegim/database/saegim_database.dart';
 import 'package:saegim/utils/routes.dart';
 
 class ScheduleList extends StatelessWidget {
-  final Schedule schedule;
+  final ScheduleData schedule;
 
   const ScheduleList({
     super.key,

@@ -13,12 +13,12 @@ class ScheduleService {
   ScheduleService();
 
   // 모든 일정 가져오기
-  Stream<List<Schedule>> watchSchedules(DateTime date) {
+  Stream<List<ScheduleData>> watchSchedules(DateTime date) {
     // 선택된 날짜의 '시작'과 '끝' 시간을 정의합니다.
     final selectedStartOfDay = DateTime(date.year, date.month, date.day);
     final selectedEndOfDay = DateTime(date.year, date.month, date.day, 23, 59, 59);
 
-    return (db.select(db.schedules)
+    return (db.select(db.schedule)
       ..where((tbl) => Expression.and([
           tbl.startTime.isSmallerOrEqualValue(selectedEndOfDay),
           tbl.endTime.isBiggerOrEqualValue(selectedStartOfDay),
@@ -37,7 +37,7 @@ class ScheduleService {
     required DateTime endTime, 
     required String content,
   }) async {
-    final scheduleCompanion = SchedulesCompanion(
+    final scheduleCompanion = ScheduleCompanion(
       title: Value(title),
       category: Value(category),
       date: Value(DateTime(startTime.year, startTime.month, startTime.day)),
@@ -48,15 +48,15 @@ class ScheduleService {
 
     if (id != null) {
       // id가 있으면 UPDATE
-      await (db.update(db.schedules)..where((tbl) => tbl.id.equals(id))).write(scheduleCompanion);
+      await (db.update(db.schedule)..where((tbl) => tbl.id.equals(id))).write(scheduleCompanion);
     } else {
       // id가 없으면 INSERT
-      await db.into(db.schedules).insert(scheduleCompanion);
+      await db.into(db.schedule).insert(scheduleCompanion);
     }
   }
 
   // 일정 삭제
   Future<void> removeSchedule(int id) async {
-    await (db.delete(db.schedules)..where((tbl) => tbl.id.equals(id))).go();
+    await (db.delete(db.schedule)..where((tbl) => tbl.id.equals(id))).go();
   }
 }

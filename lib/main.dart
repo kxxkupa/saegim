@@ -5,10 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:saegim/common/const/public_style.dart';
+import 'package:saegim/common/service/dday_service.dart';
 import 'package:saegim/common/service/memo_service.dart';
 import 'package:saegim/common/service/schedule_service.dart';
 import 'package:saegim/common/widgets/bottom_navigation.dart';
 import 'package:saegim/common/screen/home_screen.dart';
+import 'package:saegim/dday/dday_screen.dart';
+import 'package:saegim/dday/dday_view.dart';
+import 'package:saegim/dday/dday_write.dart';
 import 'package:saegim/memo/memo_view.dart';
 import 'package:saegim/utils/routes.dart';
 import 'package:saegim/calendar/schedule_screen.dart';
@@ -30,6 +34,7 @@ void setupGetIt() {
   // 각 서비스에 LocalDatabase 인스턴스를 전달하며 등록
   getIt.registerSingleton<ScheduleService>(ScheduleService());
   getIt.registerSingleton<MemoService>(MemoService());
+  getIt.registerSingleton<DdayService>(DdayService());
 }
 
 void main() async {
@@ -99,6 +104,15 @@ class Main extends StatelessWidget {
             break;
           case memoViewRoute:
             page = const MemoView();
+            break;
+          case ddayRoute:
+            page = const DdayScreen();
+            break;
+          case ddayWriteRoute:
+            page = const DdayWrite();
+            break;
+          case ddayViewRoute:
+            page = const DdayView();
             break;
           default:
             page = const HomeScreen();

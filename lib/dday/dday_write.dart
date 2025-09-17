@@ -1,46 +1,49 @@
 // 프로젝트 명 : 새김
-// 파일명 : schedule_write.dart
-// 파일 경로 : /lib/calendar/
-// 분류 : 일정 작성 페이지
+// 파일명 : dday_write.dart
+// 파일 경로 : /lib/dday/
+// 분류 : 디데이 작성 페이지
 
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
-import 'package:saegim/calendar/board_schedule.dart';
-import 'package:saegim/common/service/schedule_service.dart';
+import 'package:saegim/common/service/dday_service.dart';
 import 'package:saegim/common/widgets/board.dart';
 import 'package:saegim/common/widgets/custom_alert_dialog.dart';
+import 'package:saegim/database/model/dday.dart';
+import 'package:saegim/dday/board_dday.dart';
 import 'package:saegim/utils/routes.dart';
 
-class ScheduleWrite extends StatefulWidget {
-  const ScheduleWrite({super.key});
+class DdayWrite extends StatefulWidget {
+  const DdayWrite({super.key});
 
   @override
-  State<ScheduleWrite> createState() => _ScheduleWriteState();
+  State<DdayWrite> createState() => _DdayWriteState();
 }
 
-class _ScheduleWriteState extends State<ScheduleWrite> {
+class _DdayWriteState extends State<DdayWrite> {
   // GlobalKey 생성
   final GlobalKey<FormState> formKey = GlobalKey();
-  final scheduleBoardService = GetIt.I<ScheduleService>();
+  final ddayBoardService = GetIt.I<DdayService>();
 
   // onSaved 콜백에서 업데이트될 데이터를 임시로 저장할 맵
-  final Map<String, dynamic> _formData = {};
+  final Map<String, dynamic> _formData = {
+    'type' : DdayType.countUp,
+  };
 
   @override
   Widget build(BuildContext context) {
     return Board(
       formKey: formKey,
-      exitRoute: scheduleRoute,
+      exitRoute: ddayRoute,
       isWrite: true,
       onSave: saveForm,
-      boardBody: BoardSchedule(
+      boardBody: BoardDday(
         onTitleSaved: (val) => _formData['title'] = val,
-        onCategorySaved: (val) => _formData['category'] = val,
         onStartTimeSaved: (val) => _formData['startTime'] = parseDateTime(val),
         onEndTimeSaved: (val) => _formData['endTime'] = parseDateTime(val),
         onContentSaved: (val) => _formData['content'] = val,
-      ),
+        onTypeSaved: (val) => _formData['type'] = val,
+      )
     );
   }
 
@@ -54,27 +57,29 @@ class _ScheduleWriteState extends State<ScheduleWrite> {
       final startTime = _formData['startTime'] as DateTime?;
       final endTime = _formData['endTime'] as DateTime?;
 
-      // 3. 끝 시간이 시작 시간보다 이전인지 추가 검증
-      if (endTime!.isBefore(startTime!)) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('끝 시간이 시작 시간보다 빠를 수 없습니다.'),
-              duration: const Duration(seconds: 3),
-            ),
-          );
+      if (endTime != null) {
+        // 3. 끝 시간이 시작 시간보다 이전인지 추가 검증
+        if (endTime.isBefore(startTime!)) {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('끝 날짜가 시작 날짜보다 빠를 수 없습니다.'),
+                duration: const Duration(seconds: 3),
+              ),
+            );
+          }
+          return;
         }
-        return;
       }
       
       // 4. 모든 유효성 검사 통과 후 서비스 호출
       try {
-        await scheduleBoardService.saveSchedule(
+        await ddayBoardService.saveDday(
           title: _formData['title'],
-          category: _formData['category'],
-          startTime: startTime,
+          startTime: startTime!,
           endTime: endTime,
           content: _formData['content'],
+          type: _formData['type']
         );
 
         // 5. 저장 성공 알림
@@ -84,7 +89,7 @@ class _ScheduleWriteState extends State<ScheduleWrite> {
             builder: (context) {
               return CustomAlertDialog(
                 title: '알림',
-                content: '일정이 성공적으로 저장되었습니다.',
+                content: '디데이가 성공적으로 저장되었습니다.',
                 onConfirm: () { Navigator.of(context).pop(); },
                 onCancel: null,
               );
@@ -94,7 +99,7 @@ class _ScheduleWriteState extends State<ScheduleWrite> {
 
         // 6. 알림 후 페이지 이동
         if (mounted) {
-          Navigator.of(context).pushNamed(scheduleRoute);
+          Navigator.of(context).pushNamed(ddayRoute);
         }
         
       } catch(e) {
@@ -105,7 +110,7 @@ class _ScheduleWriteState extends State<ScheduleWrite> {
             builder: (context) {
               return CustomAlertDialog(
                 title: '오류',
-                content: '일정 저장 중 오류가 발생했습니다: $e',
+                content: '디데이 저장 중 오류가 발생했습니다: $e',
                 onConfirm: () { Navigator.of(context).pop(); },
                 onCancel: null,
               );
@@ -124,7 +129,7 @@ DateTime? parseDateTime(String? dateTimeString) {
   }
 
   try {
-    return DateFormat('yyyy년 MM월 dd일 HH시 mm분').parse(dateTimeString);
+    return DateFormat('yyyy.MM.dd').parse(dateTimeString);
   } catch(e) {
     print('날짜/시간 파싱 오류: $e');
     return null;

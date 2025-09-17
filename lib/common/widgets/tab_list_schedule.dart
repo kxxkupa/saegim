@@ -21,7 +21,7 @@ class TabListSchedule extends StatelessWidget {
       DateTime.now().day,
     );
 
-    return StreamBuilder<List<Schedule>>(
+    return StreamBuilder<List<ScheduleData>>(
       stream: GetIt.I<ScheduleService>().watchSchedules(selectedDate),
       builder: (context, snapshot) {
         
@@ -67,7 +67,7 @@ class TabListSchedule extends StatelessWidget {
   }
 
   // 일정 목록
-  Widget _buildScheduleSection(Schedule schedule) {
+  Widget _buildScheduleSection(ScheduleData schedule) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
       child: ScheduleList(

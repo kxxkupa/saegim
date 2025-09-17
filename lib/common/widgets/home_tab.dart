@@ -5,6 +5,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:saegim/common/const/public_style.dart';
+import 'package:saegim/common/widgets/tab_list_dday.dart';
 import 'package:saegim/common/widgets/tab_list_memo.dart';
 import 'package:saegim/common/widgets/tab_list_schedule.dart';
 
@@ -13,7 +14,7 @@ class HomeTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const List<String> tabTitles = ['일정', '메모'];
+    const List<String> tabTitles = ['일정', '메모', '디데이'];
 
     return DefaultTabController(
       length: tabTitles.length,
@@ -58,6 +59,9 @@ class HomeTab extends StatelessWidget {
       
                 // 메모
                 TabListMemo(),
+                
+                // 디데이
+                TabListDday(),
               ],
             ),
           ),

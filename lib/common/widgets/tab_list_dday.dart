@@ -5,20 +5,20 @@
 
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:saegim/common/service/memo_service.dart';
+import 'package:saegim/common/service/dday_service.dart';
 import 'package:saegim/common/const/public_style.dart';
 import 'package:saegim/database/saegim_database.dart';
-import 'package:saegim/memo/memo_list_item.dart';
+import 'package:saegim/dday/dday_list.dart';
 
-class TabListMemo extends StatelessWidget {
-  const TabListMemo({super.key});
+class TabListDday extends StatelessWidget {
+  const TabListDday({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final memoService = GetIt.I<MemoService>();
+    final ddayService = GetIt.I<DdayService>();
 
     return StreamBuilder(
-      stream: memoService.watchGroupedMemos(),
+      stream: ddayService.watchAllDdays(),
       builder: (context, snapshot) {
         // 1. 오류 발생 시 오류 메시지 표시
         if (snapshot.hasError) {
@@ -31,7 +31,7 @@ class TabListMemo extends StatelessWidget {
               children: [
                 Center(
                   child: Text(
-                    '등록된 메모가 없습니다.',
+                    '등록된 디데이가 없습니다.',
                     style: textSize16.copyWith(fontWeight: FontWeight.w500),
                   ),
                 ),
@@ -39,20 +39,18 @@ class TabListMemo extends StatelessWidget {
             ),
           );
         } else {
-          final groupedMemos = snapshot.data ?? {};
-          final monthKeys = groupedMemos.keys.toList()..sort((a, b) => b.compareTo(a)); // 최신 날짜순 정렬
+          final ddays = snapshot.data ?? [];
 
-          // 3. 데이터가 있을 때 리스트 뷰 표시
+          // 3. 데이터가 있을 때 리스트뷰 표시
           return Padding(
             padding: const EdgeInsets.all(5.0),
             child: ListView.builder(
-              itemCount: monthKeys.length,
+              itemCount: ddays.length,
               itemBuilder: (context, index) {
-                final monthKey = monthKeys[index];
-                final memosInMonth = groupedMemos[monthKey]!;
-
-                return _buildMonthlyMemoSection(monthKey, memosInMonth);
-              }
+                final dday = ddays[index];
+                      
+                return _buildDdaySection(dday);
+              },
             ),
           );
         }
@@ -60,25 +58,13 @@ class TabListMemo extends StatelessWidget {
     );
   }
 
-  // 메모 영역
-  Widget _buildMonthlyMemoSection(String monthKey, List<MemoData> memos) {
+  // 디데이 목록
+  Widget _buildDdaySection(DdayData dday) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 24.0),
-      child: _buildMemoList(memos),
-    );
-  }
-
-  // 메모 목록
-  Widget _buildMemoList(List<MemoData> memos) {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: memos.length,
-      itemBuilder: (context, memoIndex) {
-        final memo = memos[memoIndex];
-
-        return MemoListItem(memo: memo);
-      }
+      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
+      child: DdayList(
+        dday: dday,
+      ),
     );
   }
 }

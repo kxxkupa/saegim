@@ -6,7 +6,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:saegim/common/service/memo_service.dart';
-import 'package:saegim/common/widgets/board_header.dart';
+import 'package:saegim/common/widgets/board.dart';
 import 'package:saegim/common/widgets/custom_alert_dialog.dart';
 import 'package:saegim/memo/board_memo.dart';
 import 'package:saegim/utils/routes.dart';
@@ -29,25 +29,14 @@ class _MemoWriteState extends State<MemoWrite> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 40.0, horizontal: 36.0),
-        child: Form(
-          key: formKey,
-          child: Column(
-            children: [
-              // 게시판 헤더
-              BoardHeader(exit: memoRoute, isWrite: true, onSave: saveForm),
-              SizedBox(height: 30.0,),
-          
-              // 게시판 본문
-              BoardMemo(
-                onTitleSaved: (val) => _formData['title'] = val ?? '',
-                onContentSaved: (val) => _formData['content'] = val ?? '',
-              ),
-            ],
-          ),
-        ),
+    return Board(
+      formKey: formKey,
+      exitRoute: memoRoute,
+      isWrite: true,
+      onSave: saveForm,
+      boardBody: BoardMemo(
+        onTitleSaved: (val) => _formData['title'] = val,
+        onContentSaved: (val) => _formData['content'] = val,
       ),
     );
   }

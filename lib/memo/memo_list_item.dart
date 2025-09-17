@@ -10,7 +10,7 @@ import 'package:saegim/database/saegim_database.dart';
 import 'package:saegim/utils/routes.dart';
 
 class MemoListItem extends StatelessWidget {
-  final Memo memo;
+  final MemoData memo;
   const MemoListItem({
     super.key,
     required this.memo,
