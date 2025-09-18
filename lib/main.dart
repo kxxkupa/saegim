@@ -15,9 +15,9 @@ import 'package:saegim/dday/dday_view.dart';
 import 'package:saegim/dday/dday_write.dart';
 import 'package:saegim/memo/memo_view.dart';
 import 'package:saegim/utils/routes.dart';
-import 'package:saegim/calendar/schedule_screen.dart';
-import 'package:saegim/calendar/schedule_view.dart';
-import 'package:saegim/calendar/schedule_write.dart';
+import 'package:saegim/schedule/schedule_screen.dart';
+import 'package:saegim/schedule/schedule_view.dart';
+import 'package:saegim/schedule/schedule_write.dart';
 import 'package:saegim/memo/memo_screen.dart';
 import 'package:saegim/memo/memo_write.dart';
 

@@ -1,31 +1,28 @@
 // 프로젝트 명 : 새김
-// 파일명 : dday_write.dart
-// 파일 경로 : /lib/dday/
-// 분류 : 디데이 작성 페이지
+// 파일명 : schedule_write.dart
+// 파일 경로 : /lib/calendar/
+// 분류 : 일정 작성 페이지
 
 import 'package:flutter/material.dart';
-import 'package:saegim/common/widgets/board.dart';
-import 'package:saegim/database/model/dday.dart';
 import 'package:saegim/database/saegim_database.dart';
-import 'package:saegim/dday/board_dday.dart';
-import 'package:saegim/dday/dday_form_mixin.dart';
+import 'package:saegim/schedule/board_schedule.dart';
+import 'package:saegim/common/widgets/board.dart';
+import 'package:saegim/schedule/schedule_form_mixin.dart';
 import 'package:saegim/utils/routes.dart';
 
-class DdayWrite extends StatefulWidget {
-  const DdayWrite({super.key});
+class ScheduleWrite extends StatefulWidget {
+  const ScheduleWrite({super.key});
 
   @override
-  State<DdayWrite> createState() => _DdayWriteState();
+  State<ScheduleWrite> createState() => _ScheduleWriteState();
 }
 
-class _DdayWriteState extends State<DdayWrite> with DdayFormMixin<DdayWrite> {
+class _ScheduleWriteState extends State<ScheduleWrite> with ScheduleFormMixin<ScheduleWrite> {
   // onSaved 콜백에서 업데이트될 데이터를 임시로 저장할 맵
-  final Map<String, dynamic> _formData = {
-    'type' : DdayType.countUp,
-  };
+  final Map<String, dynamic> _formData = {};
 
   @override
-  DdayData? get dday => null;
+  ScheduleData? get schedule => null;
 
   @override
   Map<String, dynamic> get formData => _formData;
@@ -34,16 +31,16 @@ class _DdayWriteState extends State<DdayWrite> with DdayFormMixin<DdayWrite> {
   Widget build(BuildContext context) {
     return Board(
       formKey: formKey,
-      exitRoute: ddayRoute,
+      exitRoute: scheduleRoute,
       isWrite: true,
       onSave: saveForm,
-      boardBody: BoardDday(
+      boardBody: BoardSchedule(
         onTitleSaved: (val) => formData['title'] = val,
+        onCategorySaved: (val) => formData['category'] = val,
         onStartTimeSaved: (val) => formData['startTime'] = parseDateTime(val),
         onEndTimeSaved: (val) => formData['endTime'] = parseDateTime(val),
         onContentSaved: (val) => formData['content'] = val,
-        onTypeSaved: (val) => formData['type'] = val,
-      )
+      ),
     );
   }
 }

@@ -26,10 +26,10 @@ class Board extends StatefulWidget {
   });
 
   @override
-  State<Board> createState() => _BoardBodyState();
+  State<Board> createState() => _BoardState();
 }
 
-class _BoardBodyState extends State<Board> {
+class _BoardState extends State<Board> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(

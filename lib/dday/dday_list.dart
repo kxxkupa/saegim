@@ -17,32 +17,6 @@ class DdayList extends StatelessWidget {
     required this.dday,
   });
 
-  // D-day 계산 함수 추가
-  String getDday() {
-    final now = DateTime.now();
-    final baseTime = dday.type == DdayType.countDown ? dday.endTime! : dday.startTime;
-    final normalizedNow = DateTime(now.year, now.month, now.day);
-    final normalizedBaseTime = DateTime(baseTime.year, baseTime.month, baseTime.day);
-    final difference = normalizedBaseTime.difference(normalizedNow);
-    final days = difference.inDays;
-
-    if (dday.type == DdayType.countUp) {
-      if (days >= 0) {
-        return '${days + 1}일';
-      } else {
-        return 'D-Day';
-      }
-    } else { // countDown
-      if (days > 0) {
-        return 'D-$days';
-      } else if (days < 0) {
-        return '+${days.abs()}';
-      } else {
-        return 'D-Day';
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -81,6 +55,34 @@ class DdayList extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  // D-day 계산 함수
+  String getDday() {
+    final now = DateTime.now();
+    final normalizedNow = DateTime(now.year, now.month, now.day);
+
+    if (dday.type == DdayType.countUp) {
+      final normalizedBaseTime = DateTime(dday.startTime.year, dday.startTime.month, dday.startTime.day);
+      final difference = normalizedNow.difference(normalizedBaseTime);
+      final days = difference.inDays;
+
+      if (days >= 0) {
+        return '${days + 1}일';
+      } else {
+        return 'D-Day';
+      }
+    } else {
+      final normalizedBaseTime = DateTime(dday.endTime!.year, dday.endTime!.month, dday.endTime!.day);
+      final difference = normalizedBaseTime.difference(normalizedNow);
+      final days = difference.inDays;
+
+      if (days > 0) {
+        return 'D-$days';
+      } else {
+        return 'D-Day';
+      }
+    }
   }
 }
 

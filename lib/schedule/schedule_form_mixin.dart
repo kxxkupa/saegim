@@ -1,86 +1,23 @@
 // 프로젝트 명 : 새김
-// 파일명 : schedule_view.dart
-// 파일 경로 : /lib/calendar/
-// 분류 : 일정 상세 페이지
+// 파일명 : schedule_form_mixin.dart
+// 파일 경로 : /lib/schedule/
+// 분류 : 일정 공통 기능 모음
 
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
-import 'package:saegim/calendar/board_schedule.dart';
-import 'package:saegim/common/widgets/board.dart';
 import 'package:saegim/common/widgets/custom_alert_dialog.dart';
 import 'package:saegim/common/service/schedule_service.dart';
 import 'package:saegim/database/saegim_database.dart';
 import 'package:saegim/utils/routes.dart';
 
-class ScheduleView extends StatefulWidget {
-  const ScheduleView({super.key});
-
-  @override
-  State<ScheduleView> createState() => _ScheduleViewState();
-}
-
-class _ScheduleViewState extends State<ScheduleView> {
+mixin ScheduleFormMixin<T extends StatefulWidget> on State<T> {
   // GlobalKey 생성
   final GlobalKey<FormState> formKey = GlobalKey();
   final scheduleBoardService = GetIt.I<ScheduleService>();
 
-  // 일정 관리 테이블 저장 변수
-  ScheduleData? _schedule;
-
-  // onSaved 콜백에서 업데이트될 데이터를 임시로 저장할 맵
-  final Map<String, dynamic> _formData = {};
-
-  @override
-  void initState() {
-    super.initState();
-
-    // 위젯 빌드가 완료된 후 ModalRoute에 접근하여 인자를 가져오기
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      final arguments = ModalRoute.of(context)?.settings.arguments;
-
-      if (arguments != null && arguments is ScheduleData) {
-        setState(() {
-          _schedule = arguments;
-          
-          // 초기값 설정
-          _formData['title'] = _schedule!.title;
-          _formData['category'] = _schedule!.category;
-          _formData['startTime'] = _schedule!.startTime;
-          _formData['endTime'] = _schedule!.endTime;
-          _formData['content'] = _schedule!.content;
-        });
-      }
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (_schedule == null) {
-      return const Scaffold(
-        body: Center(
-          child: CircularProgressIndicator()
-        ),
-      );
-    }
-
-    return Board(
-      formKey: formKey,
-      exitRoute: scheduleRoute,
-      isWrite: false,
-      onSave: saveForm,
-      onDelete: removeForm,
-      boardBody: BoardSchedule(
-        schedule: _schedule,
-        onTitleSaved: (val) => _formData['title'] = val,
-        onCategorySaved: (val) => _formData['category'] = val,
-        onStartTimeSaved: (val) => _formData['startTime'] = parseDateTime(val),
-        onEndTimeSaved: (val) => _formData['endTime'] = parseDateTime(val),
-        onContentSaved: (val) => _formData['content'] = val,
-      ),
-    );
-  }
+  ScheduleData? get schedule;
+  Map<String, dynamic> get formData;
 
   // 저장
   Future<void> saveForm() async {
@@ -89,8 +26,8 @@ class _ScheduleViewState extends State<ScheduleView> {
       // validator를 모두 통과하면 onSaved 콜백을 실행하여 변수에 값을 할당
       formKey.currentState!.save();
 
-      final startTime = _formData['startTime'] as DateTime?;
-      final endTime = _formData['endTime'] as DateTime?;
+      final startTime = formData['startTime'] as DateTime?;
+      final endTime = formData['endTime'] as DateTime?;
 
       // 끝 시간이 시작 시간보다 이전인지 추가 검증
       if (endTime!.isBefore(startTime!)) {
@@ -108,15 +45,15 @@ class _ScheduleViewState extends State<ScheduleView> {
       
       // 모든 유효성 검사 통과 후 서비스 호출
       try {
-        final id = _schedule?.id; 
+        final id = schedule?.id; 
         
         await scheduleBoardService.saveSchedule(
           id: id,
-          title: _formData['title'],
-          category: _formData['category'],
+          title: formData['title'],
+          category: formData['category'],
           startTime: startTime,
           endTime: endTime,
-          content: _formData['content'],
+          content: formData['content'],
         );
 
         // 저장 성공 알림
@@ -154,7 +91,7 @@ class _ScheduleViewState extends State<ScheduleView> {
     // 사용자가 '확인' 버튼을 눌렀을 때만 삭제 로직 실행
     if (result == true) {
       try {
-        await scheduleBoardService.removeSchedule(_schedule!.id);
+        await scheduleBoardService.removeSchedule(schedule!.id);
 
         // 삭제 성공 시 알림창 표시
         await _showResultDialog('알림', '일정이 성공적으로 삭제되었습니다.');
@@ -188,18 +125,18 @@ class _ScheduleViewState extends State<ScheduleView> {
       );
     }
   }
-}
 
-// String으로 콜백받은 데이터를 DateTime으로 변환하는 함수
-DateTime? parseDateTime(String? dateTimeString) {
-  if(dateTimeString == null || dateTimeString.isEmpty){
-    return null;
-  }
+  // String으로 콜백받은 데이터를 DateTime으로 변환하는 함수
+  DateTime? parseDateTime(String? dateTimeString) {
+    if(dateTimeString == null || dateTimeString.isEmpty){
+      return null;
+    }
 
-  try {
-    return DateFormat('yyyy년 MM월 dd일 HH시 mm분').parse(dateTimeString);
-  } catch(e) {
-    print('날짜/시간 파싱 오류: $e');
-    return null;
+    try {
+      return DateFormat('yyyy년 MM월 dd일 HH시 mm분').parse(dateTimeString);
+    } catch(e) {
+      print('날짜/시간 파싱 오류: $e');
+      return null;
+    }
   }
 }

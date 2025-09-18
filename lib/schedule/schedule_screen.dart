@@ -4,9 +4,9 @@
 // 분류 : 일정 화면
 
 import 'package:flutter/material.dart';
-import 'package:saegim/calendar/main_calendar.dart';
-import 'package:saegim/calendar/schedule_list.dart';
-import 'package:saegim/calendar/today_banner.dart';
+import 'package:saegim/schedule/main_calendar.dart';
+import 'package:saegim/schedule/schedule_list.dart';
+import 'package:saegim/schedule/today_banner.dart';
 import 'package:saegim/common/const/public_style.dart';
 import 'package:saegim/common/widgets/circle_add.dart';
 import 'package:saegim/common/widgets/header.dart';
