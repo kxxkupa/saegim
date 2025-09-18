@@ -191,6 +191,7 @@ class _DateTimePickerDialogState extends State<_DateTimePickerDialog> {
                 ),
                 // 날짜 선택을 위한 CalendarDatePicker 위젯 사용
                 child: CalendarDatePicker(
+                  key: ValueKey<DateTime>(DateTime(tempDateTime.year, tempDateTime.month, tempDateTime.day)),
                   initialDate: tempDateTime,
                   firstDate: DateTime(2000),
                   lastDate: DateTime(2101),
